@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="master_v9jc@dpg-clf43b4p3ifc73ek70o0-a.frankfurt-postgres.render.com" uuid="5cdc1a82-09ab-4ade-a067-a74b3df29a5c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dpg-clf43b4p3ifc73ek70o0-a.frankfurt-postgres.render.com:5432/master_v9jc</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="quarkus_tests" uuid="c2d31fd4-6fd9-4991-b317-65135485ef6e">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dpg-clf43b4p3ifc73ek70o0-a.frankfurt-postgres.render.com:5432/master_v9jc</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

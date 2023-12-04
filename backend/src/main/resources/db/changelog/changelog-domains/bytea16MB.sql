@@ -1,0 +1,1 @@
+CREATE DOMAIN bytea16MB AS bytea CONSTRAINT check_length CHECK  ( octet_length(VALUE) <= 16 * 1024 * 1024 );
