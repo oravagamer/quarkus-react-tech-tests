@@ -6,5 +6,6 @@ CREATE TABLE pictures
     filename    VARCHAR(50) NOT NULL,
     datatype    VARCHAR(5)  NOT NULL,
     description VARCHAR(255),
-    data        bytea16MB       NOT NULL
+    thumbnail   bytea16mb,
+    data        bytea16mb       NOT NULL
 );
