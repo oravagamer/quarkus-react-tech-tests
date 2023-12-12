@@ -1,8 +1,10 @@
 package quarkus.react.tech.tests.gallery.pictures;
 
+import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
-import quarkus.react.tech.tests.ConfigDataSource;
+import org.jboss.logging.Logger;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureDTO;
 
 import java.sql.Connection;
@@ -10,15 +12,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Singleton
+@RequestScoped
 public class PicturesRepository implements PicturesDAO {
     @Inject
-    ConfigDataSource datasource;
+    Instance<Connection> connection;
+
+    Logger logger = Logger.getLogger(PicturesRepository.class);
 
     @Override
     public PictureDTO findPictureById(Long id) {
         try {
-            Connection c = datasource.getConnection();
+            Connection c = connection.get();
             PreparedStatement ps = c.prepareStatement("SELECT filename, datatype, data FROM pictures WHERE id = ?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
@@ -26,9 +30,6 @@ public class PicturesRepository implements PicturesDAO {
             PictureDTO pictureDTO = new PictureDTO(rs.getString("filename"),
                     rs.getString("datatype"),
                     rs.getBinaryStream("data"));
-            rs.close();
-            ps.close();
-            c.close();
             return pictureDTO;
         } catch (SQLException e) {
             return null;
@@ -53,5 +54,15 @@ public class PicturesRepository implements PicturesDAO {
     @Override
     public void insert(Picture entity) {
 
+    }
+
+    @PreDestroy
+    @Override
+    public void closeConnection() {
+        try {
+            this.connection.get().close();
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
     }
 }

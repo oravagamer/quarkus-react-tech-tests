@@ -1,7 +1,10 @@
 package quarkus.react.tech.tests;
 
+import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -11,8 +14,7 @@ import java.sql.SQLException;
 
 @ApplicationScoped
 public class ConfigDataSource {
-    @Inject
-    Logger logger;
+    private static final Logger logger = Logger.getLogger(ConfigDataSource.class);
 
     @ConfigProperty(name = "application.datasource.username")
     String username;
@@ -23,6 +25,8 @@ public class ConfigDataSource {
     @ConfigProperty(name = "application.datasource.jdbc-url")
     String url;
 
+    @Dependent
+    @Produces
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(url, username, password);
