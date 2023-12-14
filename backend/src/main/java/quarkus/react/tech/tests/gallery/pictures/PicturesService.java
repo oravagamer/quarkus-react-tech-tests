@@ -11,6 +11,9 @@ import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 
 import org.jboss.logging.Logger;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 @ApplicationScoped
 public class PicturesService {
     @Inject
@@ -33,9 +36,9 @@ public class PicturesService {
         return Response.serverError().build();
     }
 
-    public void uploadPicture(MultipartFormDataInput dataInput) {
+    public void uploadPicture(MultipartFormDataInput dataInput) throws IOException {
         FormValue file = dataInput.getValues().get("file").iterator().next();
         String desc = dataInput.getValues().get("description").iterator().next().getValue();
-        picturesDAO.insert(new PictureUploadDTO(file, desc));
+        picturesDAO.insert(new PictureUploadDTO(file.getFileItem().getInputStream(), file.getFileName(), desc));
     }
 }

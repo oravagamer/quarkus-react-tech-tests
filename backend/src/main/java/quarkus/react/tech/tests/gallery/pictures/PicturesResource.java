@@ -12,6 +12,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 @Path("/picture")
@@ -32,7 +33,7 @@ public class PicturesResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     @Blocking
-    public Uni<Response> uploadPicture(MultipartFormDataInput multipartFormDataInput) {
+    public Uni<Response> uploadPicture(MultipartFormDataInput multipartFormDataInput) throws IOException {
         service.uploadPicture(multipartFormDataInput);
         return Uni.createFrom().item(Response.ok().build());
     }

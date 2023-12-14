@@ -15,15 +15,22 @@ import java.io.File;
 import java.io.InputStream;
 
 public class PictureUploadDTO {
-    private FormValue file;
-    private String description;
+    private final InputStream file;
+    private final String description;
 
-    public PictureUploadDTO(FormValue file, String description) {
+    private final String fileName;
+
+    public PictureUploadDTO(InputStream file, String fileName, String description) {
         this.file = file;
+        this.fileName = fileName;
         this.description = description;
     }
 
-    public FormValue getFile() {
+    public String getFileName() {
+        return fileName;
+    }
+
+    public InputStream getFile() {
         return file;
     }
 

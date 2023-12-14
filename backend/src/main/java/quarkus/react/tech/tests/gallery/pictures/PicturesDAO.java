@@ -44,17 +44,15 @@ public class PicturesDAO {
         try {
             Connection c = dataSource.getConnection();
             PreparedStatement ps = c.prepareStatement("INSERT INTO pictures(filename, datatype, description, data) VALUES (?, ?, ?, ?)");
-            String filename = pictureUploadDTO.getFile().getFileName();
+            String filename = pictureUploadDTO.getFileName();
             ps.setString(1, filename.substring(0, filename.lastIndexOf(".")));
             ps.setString(2, filename.substring(filename.lastIndexOf(".") + 1));
             ps.setString(3, pictureUploadDTO.getDescription());
-            ps.setBinaryStream(4, pictureUploadDTO.getFile().getFileItem().getInputStream());
+            ps.setBinaryStream(4, pictureUploadDTO.getFile());
             ps.executeUpdate();
             c.close();
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
