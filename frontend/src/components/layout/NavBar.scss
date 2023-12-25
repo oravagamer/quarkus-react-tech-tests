@@ -1,0 +1,26 @@
+@import "src/styleSettings";
+
+nav#nav-bar ul {
+  margin: 0;
+  padding: 0;
+  background-color: $nav-bg-color;
+
+  li {
+    display: inline-flex;
+
+    a {
+      padding: 1rem;
+      color: $font-color;
+      background-color: $nav-bg-color;
+      text-decoration: none;
+
+      &:hover {
+        background-color: green;
+      }
+
+      &:active {
+        background-color: $nav-active-bg-color;
+      }
+    }
+  }
+}
