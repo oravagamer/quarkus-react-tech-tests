@@ -15,7 +15,7 @@ spring-boot-and-react-tech-tests
 
 ### Concept:
 - Fate RPG
-- Gallery
+- Galleries
 - Chatting App
 - Book reader
 - Calendar

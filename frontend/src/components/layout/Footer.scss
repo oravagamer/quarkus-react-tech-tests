@@ -1,0 +1,18 @@
+@import "src/defaultSettings";
+
+$bg-color: #00521a;
+
+footer#footer {
+  display: flex;
+  width: 100%;
+  background-color: $bg-color;
+  justify-content: center;
+  margin-top: auto;
+
+  height: 4rem;
+
+  div {
+    text-align: center;
+  }
+
+}

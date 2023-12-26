@@ -7,6 +7,7 @@ import LoadingPage from "./pages/LoadingPage.tsx";
 
 const App = () => {
     const Home = loadComponentAsync("./pages/common/Home.tsx");
+    const Galleries = loadComponentAsync("./pages/common/Galleries.tsx");
     const Gallery = loadComponentAsync("./pages/common/Gallery.tsx");
     const AdminHome = loadComponentAsync("./pages/admin/AdminHome.tsx");
 
@@ -16,7 +17,10 @@ const App = () => {
                 <Route path="/" element={<Layout/>}>
                     <Route path="">
                         <Route index element={<Home/>}/>
-                        <Route path="gallery" element={<Gallery/>}/>
+                        <Route path="gallery">
+                            <Route index element={<Galleries/>}/>
+                            <Route path=":gid" element={<Gallery/>}/>
+                        </Route>
                     </Route>
                     <Route path="admin">
                         <Route index element={<AdminHome/>}/>

@@ -1,26 +1,56 @@
-@import "src/styleSettings";
+@import "src/defaultSettings";
 
-nav#nav-bar ul {
-  margin: 0;
-  padding: 0;
-  background-color: $nav-bg-color;
+$pseudo-hover-bg-color: #113d18;
+$pseudo-active-bg-color: #0d5e16;
+$active-bg-color: #093409;
 
-  li {
-    display: inline-flex;
+nav#nav-bar {
+  background-color: $bg-color;
+  display: flex;
+  justify-content: space-between;
 
-    a {
-      padding: 1rem;
-      color: $font-color;
-      background-color: $nav-bg-color;
-      text-decoration: none;
+  ul {
+    list-style: none;
 
-      &:hover {
-        background-color: green;
-      }
+    li {
+      display: inline-flex;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      padding-right: 0.5rem;
 
-      &:active {
-        background-color: $nav-active-bg-color;
+      a {
+        padding: 0.75rem 1rem;
+        text-decoration: none;
+        text-align: center;
+
+        &:hover {
+          background-color: $pseudo-hover-bg-color;
+        }
+
+        &:active {
+          background-color: $pseudo-active-bg-color;
+        }
+
+        &.active {
+          background-color: $active-bg-color;
+        }
+
+
       }
     }
+  }
+
+  a#site-name-logo {
+    padding: 0.5rem;
+    display: inline-flex;
+    text-decoration: none;
+    align-items: center;
+
+    div {
+      text-align: center;
+      padding: 0.5rem;
+    }
+
   }
 }
