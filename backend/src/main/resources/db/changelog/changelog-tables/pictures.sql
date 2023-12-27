@@ -7,5 +7,7 @@ CREATE TABLE pictures
     datatype    VARCHAR(5)  NOT NULL,
     description VARCHAR(255),
     thumbnail   bytea16mb,
-    data        bytea16mb       NOT NULL
+    data        bytea16mb   NOT NULL,
+    uploaded    TIMESTAMP   NOT NULL,
+    edited      TIMESTAMP   NOT NULL
 );

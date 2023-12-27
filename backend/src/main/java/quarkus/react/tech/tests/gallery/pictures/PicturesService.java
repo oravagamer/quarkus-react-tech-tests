@@ -41,4 +41,12 @@ public class PicturesService {
         String desc = dataInput.getValues().get("description").iterator().next().getValue();
         picturesDAO.insert(new PictureUploadDTO(file.getFileItem().getInputStream(), file.getFileName(), desc));
     }
+
+    public void changeDescription(Long id, String description) {
+        picturesDAO.updateDescription(id, description);
+    }
+
+    public void deletePicture(Long id) {
+        picturesDAO.deletePicture(id);
+    }
 }

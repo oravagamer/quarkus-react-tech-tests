@@ -15,12 +15,12 @@ import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Path("/picture")
+@Path("picture")
 public class PicturesResource {
     @Inject
     PicturesService service;
 
-    @Path("/{id}")
+    @Path("{id}")
     @GET
     @Produces("image/*")
     @Blocking
@@ -28,7 +28,7 @@ public class PicturesResource {
         return Uni.createFrom().item(service.downloadPicture(id));
     }
 
-    @Path("/")
+    @Path("")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
@@ -36,5 +36,24 @@ public class PicturesResource {
     public Uni<Response> uploadPicture(MultipartFormDataInput multipartFormDataInput) throws IOException {
         service.uploadPicture(multipartFormDataInput);
         return Uni.createFrom().item(Response.ok().build());
+    }
+
+    @Path("{id}/pic-desc")
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Blocking
+    public void changeDescription(String description,
+                                  @PathParam("id") Long id) {
+        service.changeDescription(id, description);
+    }
+
+    @Path("{id}")
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Blocking
+    public void deletePicture(@PathParam("id") Long id) {
+        service.deletePicture(id);
     }
 }

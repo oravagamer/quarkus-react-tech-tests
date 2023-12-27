@@ -6,4 +6,10 @@
     <changeSet id="pictures-table" author="tables-changelog">
         <sqlFile path="pictures.sql" relativeToChangelogFile="true" dbms="postgresql"/>
     </changeSet>
+    <changeSet id="galleries-table" author="tables-changelog">
+        <sqlFile path="galleries.sql" relativeToChangelogFile="true" dbms="postgresql" />
+    </changeSet>
+    <changeSet id="pic_in_gal_order-table" author="tables-changelog">
+        <sqlFile path="pic_in_gal_order.sql" relativeToChangelogFile="true" dbms="postgresql" />
+    </changeSet>
 </databaseChangeLog>
