@@ -7,7 +7,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import quarkus.react.tech.tests.MyExceptions;
-import quarkus.react.tech.tests.gallery.galleries.DTO.PictureDTO;
 
 import java.util.ArrayList;
 
@@ -82,8 +81,8 @@ public class GalleriesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
-    public Uni<ArrayList<Response>> changePictureOrder(ArrayList<Long> ids) {
-        return
+    public Uni<Response> changePictureOrder(ArrayList<Long> ids) {
+        return Uni.createFrom().item(service.changePictureOrder(ids));
     }
 
 }

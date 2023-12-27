@@ -70,37 +70,6 @@ public class PicturesDAO {
         }
     }
 
-    public void updateDescription(Long id, String description) {
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE galleries SET description = ? WHERE id = ?");
-            ps.setString(1, description);
-            ps.setLong(2, id);
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
-        }
-        try {
-            c.close();
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
-        }
-    }
-
-    public void deletePicture(Long id) {
-        try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM pictures WHERE id = ?");
-            ps.setLong(1, id);
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
-        }
-        try {
-            c.close();
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
-        }
-    }
-
     @PostConstruct
     void init() {
         c = dataSource.getConnection();

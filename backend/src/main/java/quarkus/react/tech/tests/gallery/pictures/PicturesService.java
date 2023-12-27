@@ -1,23 +1,25 @@
 package quarkus.react.tech.tests.gallery.pictures;
 
-import io.smallrye.common.annotation.NonBlocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.server.multipart.FormValue;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
+import quarkus.react.tech.tests.DbDAO;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureDTO;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 
 import org.jboss.logging.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 @ApplicationScoped
 public class PicturesService {
     @Inject
     PicturesDAO picturesDAO;
+
+    @Inject
+    DbDAO dbDAO;
 
     Logger logger = Logger.getLogger(PicturesService.class);
 
@@ -43,10 +45,10 @@ public class PicturesService {
     }
 
     public void changeDescription(Long id, String description) {
-        picturesDAO.updateDescription(id, description);
+        dbDAO.createUpdateDelete("UPDATE galleries SET description = ? WHERE id = ?", description, id);
     }
 
     public void deletePicture(Long id) {
-        picturesDAO.deletePicture(id);
+        dbDAO.createUpdateDelete("DELETE FROM pictures WHERE id = ?", id);
     }
 }
