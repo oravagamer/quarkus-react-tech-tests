@@ -9,7 +9,10 @@ import java.util.*;
 
 /**
  * v1.0.0
- * Don't use with InputStream etc.
+ * Don't use with {@code InputStream} or {@code OutputStream}
+ *
+ * @see java.io.InputStream
+ * @see java.io.OutputStream
  */
 
 @ApplicationScoped
@@ -57,8 +60,7 @@ public class DbDAO {
      *
      * @param sql  is basic SQL query with ? for parameter placeholder
      * @param args is nullable array with params injected into sql query
-     * @return {@code ArrayList<HashMap<String, Object>>}
-     * is list full of HashMap objects that contains returned values under column name
+     * @return {@code ArrayList<HashMap<String, Object>>} list full of HashMap objects that contains returned values under column name
      */
 
     public ArrayList<HashMap<String, Object>> read(String sql, Object... args) {
