@@ -76,13 +76,35 @@ public class GalleriesResource {
         return Uni.createFrom().item(service.getGalleryInfo(id));
     }
 
-    @Path("ord/{id}")
+    @Path("{id}/ord")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
-    public Uni<Response> changePictureOrder(ArrayList<Long> ids) {
-        return Uni.createFrom().item(service.changePictureOrder(ids));
+    public Uni<Response> changePictureOrder(ArrayList<Long> ids,
+                                            @PathParam("id") Long gid) {
+        return Uni.createFrom().item(service.changePictureOrder(ids, gid));
     }
+
+    @Path("{gid}/{pid}")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Blocking
+    public void addPictureToGallery(@PathParam("gid") Long gid,
+                                  @PathParam("pid") Long pid) {
+        service.addPictureToGallery(pid, gid);
+    }
+
+    @Path("{gid}/{pid}")
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Blocking
+    public void removePictureFromGallery(@PathParam("gid") Long gid,
+                                  @PathParam("pid") Long pid) {
+        service.removePictureFromGallery(pid, gid);
+    }
+
 
 }

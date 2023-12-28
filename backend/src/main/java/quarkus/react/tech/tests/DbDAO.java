@@ -30,24 +30,15 @@ public class DbDAO {
      */
     public void createUpdateDelete(String sql, Object... args) {
         Connection c = dataSource.getConnection();
-        Savepoint sp = null;
         try {
-            c.setAutoCommit(false);
-            sp = c.setSavepoint();
             PreparedStatement ps = c.prepareStatement(sql);
-            preparedStatementMap(ps, args);
+            preparedStatementMap(ps, c, args);
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
-            try {
-                c.rollback(sp);
-            } catch (SQLException ex1) {
-                logger.error(ex1);
-            }
         } finally {
             try {
-                c.commit();
-                c.setAutoCommit(true);
                 c.close();
             } catch (SQLException ex1) {
                 logger.error(ex1.getMessage());
@@ -65,13 +56,10 @@ public class DbDAO {
 
     public ArrayList<HashMap<String, Object>> read(String sql, Object... args) {
         Connection c = dataSource.getConnection();
-        Savepoint sp = null;
         ArrayList<HashMap<String, Object>> result = new ArrayList<>();
         try {
-            c.setAutoCommit(false);
-            sp = c.setSavepoint();
             PreparedStatement ps = c.prepareStatement(sql);
-            preparedStatementMap(ps, args);
+            preparedStatementMap(ps, c, args);
             ResultSet rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int count = rsmd.getColumnCount();
@@ -93,15 +81,10 @@ public class DbDAO {
                 }
                 result.add(hm);
             }
-            c.setAutoCommit(false);
-
+            rs.close();
+            ps.close();
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
-            try {
-                c.rollback(sp);
-            } catch (SQLException ex1) {
-                logger.error(ex1);
-            }
         } finally {
             try {
                 c.close();
@@ -113,7 +96,7 @@ public class DbDAO {
     }
 
 
-    void preparedStatementMap(PreparedStatement ps, Object... args) throws SQLException {
+    void preparedStatementMap(PreparedStatement ps, Connection c, Object... args) throws SQLException {
         for (int i = 0; i < args.length; i++) {
             if (args[i].getClass().isNestmateOf(Long.class)) {
                 ps.setLong(i + 1, ((Long) args[i]));
