@@ -9,7 +9,7 @@ spring-boot-and-react-tech-tests
 - [DnD](https://dndkit.com/)
 - [MUI](https://mui.com/material-ui/getting-started/installation/)
 - [Keycloak](https://www.npmjs.com/package/@react-keycloak/web)
-- [Axios](https://www.npmjs.com/package/axios)
+- [Axios Hooks](https://www.npmjs.com/package/axios-hooks)
 - [Sass](https://sass-lang.com/documentation/)
 - [React + Sass](https://www.w3schools.com/react/react_sass_styling.asp)
 

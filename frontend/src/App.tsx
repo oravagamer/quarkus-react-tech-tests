@@ -1,6 +1,6 @@
-import {Route, Routes, BrowserRouter} from "react-router-dom";
+import {RouterProvider, createBrowserRouter} from "react-router-dom";
 
-import loadable from '@loadable/component';
+import loadable from "@loadable/component";
 import Layout from "./components/Layout.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import LoadingPage from "./pages/LoadingPage.tsx";
@@ -11,24 +11,49 @@ const App = () => {
     const Gallery = loadComponentAsync("./pages/common/Gallery.tsx");
     const AdminHome = loadComponentAsync("./pages/admin/AdminHome.tsx");
 
+    const router = createBrowserRouter([
+        {
+            path: "",
+            element: <Layout />,
+            errorElement: <ErrorPage/>,
+            children: [
+                {
+                    path: "",
+                    children: [
+                        {
+                            index: true,
+                            element: <Home/>
+                        },
+                        {
+                            path: "gallery",
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Galleries/>
+                                },
+                                {
+                                    path: ":id",
+                                    element: <Gallery/>
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    path: "admin",
+                    children: [
+                        {
+                            index: true,
+                            element: <AdminHome/>
+                        }
+                    ]
+                }
+            ]
+        }
+    ]);
+
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Layout/>}>
-                    <Route path="">
-                        <Route index element={<Home/>}/>
-                        <Route path="gallery">
-                            <Route index element={<Galleries/>}/>
-                            <Route path=":gid" element={<Gallery/>}/>
-                        </Route>
-                    </Route>
-                    <Route path="admin">
-                        <Route index element={<AdminHome/>}/>
-                    </Route>
-                    <Route path="*" element={<ErrorPage/>}/>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router}/>
     );
 }
 
