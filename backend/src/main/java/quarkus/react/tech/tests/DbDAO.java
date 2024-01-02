@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * v1.0.0
- * Don't use with {@code InputStream} or {@code OutputStream}
+ * Don't use with {@code InputStream} or {@code OutputStream} or {@code Array}
  *
  * @see java.io.InputStream
  * @see java.io.OutputStream
@@ -32,7 +32,7 @@ public class DbDAO {
         Connection c = dataSource.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement(sql);
-            preparedStatementMap(ps, c, args);
+            preparedStatementMap(ps, args);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
@@ -59,7 +59,7 @@ public class DbDAO {
         ArrayList<HashMap<String, Object>> result = new ArrayList<>();
         try {
             PreparedStatement ps = c.prepareStatement(sql);
-            preparedStatementMap(ps, c, args);
+            preparedStatementMap(ps, args);
             ResultSet rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int count = rsmd.getColumnCount();
@@ -96,7 +96,7 @@ public class DbDAO {
     }
 
 
-    void preparedStatementMap(PreparedStatement ps, Connection c, Object... args) throws SQLException {
+    void preparedStatementMap(PreparedStatement ps, Object... args) throws SQLException {
         for (int i = 0; i < args.length; i++) {
             if (args[i].getClass().isNestmateOf(Long.class)) {
                 ps.setLong(i + 1, ((Long) args[i]));

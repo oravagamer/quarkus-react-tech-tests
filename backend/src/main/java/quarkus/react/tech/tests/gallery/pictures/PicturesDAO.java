@@ -9,10 +9,7 @@ import quarkus.react.tech.tests.ConfigDataSource;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureDTO;
 import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @RequestScoped
 public class PicturesDAO {
@@ -46,7 +43,9 @@ public class PicturesDAO {
     }
 
     void insert(PictureUploadDTO pictureUploadDTO) {
+        Savepoint sp = null;
         try {
+            sp = c.setSavepoint();
             PreparedStatement ps = c.prepareStatement("INSERT INTO pictures(filename, datatype, description, data, uploaded, edited) VALUES (?, ?, ?, ?, current_timestamp, current_timestamp) RETURNING id");
             String filename = pictureUploadDTO.getFileName();
             ps.setString(1, filename.substring(0, filename.lastIndexOf(".")));
@@ -55,7 +54,7 @@ public class PicturesDAO {
             ps.setBinaryStream(4, pictureUploadDTO.getFile());
             ResultSet rs = ps.executeQuery();
             rs.next();
-            Long id = rs.getLong("id");
+            long id = rs.getLong("id");
             rs.close();
             ps.close();
             ps = c.prepareStatement("INSERT INTO pic_in_gal(pid, gid, pic_order) VALUES (?, 1, coalesce((SELECT max(pic_order) + 1 FROM pic_in_gal), 1))");
@@ -63,11 +62,17 @@ public class PicturesDAO {
             ps.executeUpdate();
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
-        }
-        try {
-            c.close();
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
+            try {
+                c.rollback(sp);
+            } catch (SQLException ex1) {
+                logger.error(ex1.getMessage());
+            }
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+            }
         }
     }
 
