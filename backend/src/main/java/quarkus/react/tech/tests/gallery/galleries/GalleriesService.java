@@ -25,7 +25,7 @@ public class GalleriesService {
     DbDAO dbDAO;
 
     public Response getGalleriesInfo() {
-        return Response.ok(dbDAO.read("SELECT * FROM galleries ORDER BY created")).build();
+        return Response.ok(dbDAO.read("SELECT id, name, description, created, edited, pid FROM galleries JOIN pic_in_gal pig on galleries.id = pig.gid WHERE thumbnail = TRUE ORDER BY created")).build();
     }
 
     public void createGallery(String name, String description) {
@@ -46,7 +46,7 @@ public class GalleriesService {
 
     public Response getGalleryInfo(Long id) {
         ArrayList<Object> list = new ArrayList<>();
-        list.add(dbDAO.read("SELECT * FROM galleries WHERE id = ?", id));
+        list.add(dbDAO.read("SELECT * FROM galleries WHERE id = ?", id).get(0));
         list.add(dbDAO.read("SELECT id, description, uploaded, edited FROM picture_info WHERE gid = ?", id));
         return Response.ok().entity(list).build();
     }
@@ -101,6 +101,12 @@ public class GalleriesService {
     }
 
     public void addPictureToGallery(Long pid, Long gid) {
-        dbDAO.createUpdateDelete("INSERT INTO pic_in_gal(pid, gid, pic_order) VALUES(?, ?, (SELECT CASE WHEN max(pic_order) IS NULL THEN 1 ELSE max(pic_order) END FROM pic_in_gal WHERE gid = ?))", pid, gid, gid);
+        dbDAO.createUpdateDelete("INSERT INTO pic_in_gal(pid, gid, pic_order, thumbnail) VALUES(?, ?, (SELECT CASE WHEN max(pic_order) IS NULL THEN 1 ELSE max(pic_order) END FROM pic_in_gal WHERE gid = ?), (SELECT CASE WHEN count(thumbnail) = 1 THEN FALSE ELSE TRUE END FROM pic_in_gal WHERE gid = ? AND thumbnail = TRUE))", pid, gid, gid, gid);
+
+    }
+
+    public void setPictureAsThumbnail(Long pid, Long gid) {
+        dbDAO.createUpdateDelete("UPDATE pic_in_gal SET thumbnail = FALSE WHEN thumbnail = TRUE AND gid = ?", gid);
+        dbDAO.createUpdateDelete("UPDATE pic_in_gal SET thumbnail = TRUE WHERE pid = ? AND gid = ?", pid, gid);
     }
 }

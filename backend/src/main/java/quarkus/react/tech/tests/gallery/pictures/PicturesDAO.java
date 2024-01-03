@@ -45,6 +45,7 @@ public class PicturesDAO {
     void insert(PictureUploadDTO pictureUploadDTO) {
         Savepoint sp = null;
         try {
+            c.setAutoCommit(false);
             sp = c.setSavepoint();
             PreparedStatement ps = c.prepareStatement("INSERT INTO pictures(filename, datatype, description, data, uploaded, edited) VALUES (?, ?, ?, ?, current_timestamp, current_timestamp) RETURNING id");
             String filename = pictureUploadDTO.getFileName();
@@ -57,9 +58,10 @@ public class PicturesDAO {
             long id = rs.getLong("id");
             rs.close();
             ps.close();
-            ps = c.prepareStatement("INSERT INTO pic_in_gal(pid, gid, pic_order) VALUES (?, 1, coalesce((SELECT max(pic_order) + 1 FROM pic_in_gal), 1))");
+            ps = c.prepareStatement("INSERT INTO pic_in_gal(pid, gid, pic_order, thumbnail) VALUES (?, 1, coalesce((SELECT max(pic_order) + 1 FROM pic_in_gal), 1), (SELECT CASE WHEN count(thumbnail) = 1 THEN FALSE ELSE TRUE END FROM pic_in_gal WHERE gid = 1 AND thumbnail = TRUE))");
             ps.setLong(1, id);
             ps.executeUpdate();
+            c.setAutoCommit(true);
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
             try {

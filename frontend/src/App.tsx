@@ -32,7 +32,7 @@ const App = () => {
                                     element: <Galleries/>
                                 },
                                 {
-                                    path: ":id",
+                                    path: ":gid",
                                     element: <Gallery/>
                                 }
                             ]

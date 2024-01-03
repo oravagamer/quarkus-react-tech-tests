@@ -26,9 +26,7 @@ public class PicturesService {
     public Response downloadPicture(Long id) {
         PictureDTO pictureDTO = picturesDAO.findPictureById(id);
         try {
-            logger.info("Transaction started");
             Response.ResponseBuilder response = Response.ok(pictureDTO.getData());
-            logger.info("Transaction ended.");
             response.header("Content-Disposition", "filename=" + pictureDTO.getFilename() + "." + pictureDTO.getDatatype());
             response.header("Content-Type", "image/*");
             return response.build();

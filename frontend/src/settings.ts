@@ -1,2 +1,2 @@
-export const frontendUrl = "http://127.0.0.1:5173";
-export const backendUrl = `${frontendUrl}/rest/api`;
+export const frontendUrl = location.toString();
+export const backendUrl = new URL("/rest/api", frontendUrl);

@@ -1,25 +1,24 @@
 import useAxios from "axios-hooks";
 import {backendUrl} from "../../settings.ts";
+import {Link} from "react-router-dom";
+import RequestLayout from "../../components/RequestLayout.tsx";
+import './Galleries.scss';
 
 const Galleries = () => {
-    const [{data, loading, error}, reFetch] = useAxios<Gallery[]>(`${backendUrl}/galleries`);
-
-    if (loading) return <p>Loading...</p>
-    if (error) {
-        return (
-            <div id="galleries">
-                <h1>{error.response?.status}</h1>
-                <h3>{error.message}</h3>
-                <h5>{error.code}</h5>
-            </div>
-        )
-    }
+    const [{data, loading, error}] = useAxios<Gallery[]>(`${backendUrl}/galleries`);
 
     return (
-        <div id="galleries">
-            <button onClick={() => reFetch()}>reFetch</button>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
+        <RequestLayout loading={loading} error={error} id="galleries">
+            {
+                data?.map(gallery =>
+                    <div className="gallery" key={gallery.id}>
+                        <img src={`${backendUrl}/picture/${gallery?.pid}`} alt={`${gallery.name} thumbnail`} />
+                        <h1>{gallery?.name}</h1>
+                        <h4>{gallery?.description}</h4>
+                        <Link to={gallery?.id.toString()}>More</Link>
+                    </div>)
+            }
+        </RequestLayout>
     );
 }
 

@@ -106,5 +106,15 @@ public class GalleriesResource {
         service.removePictureFromGallery(pid, gid);
     }
 
+    @Path("{gid}/{pid}/thumbnail")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Blocking
+    public void setPictureAsThumbnail(@PathParam("gid") Long gid,
+                                  @PathParam("pid") Long pid) {
+        service.setPictureAsThumbnail(pid, gid);
+    }
+
 
 }

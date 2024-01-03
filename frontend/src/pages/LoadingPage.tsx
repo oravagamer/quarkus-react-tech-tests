@@ -1,6 +1,10 @@
+import {CircularProgress} from "@mui/material";
+
 const LoadingPage = () => {
     return (
-        <div id="loading">Loading</div>
+        <section id="loading">
+            <CircularProgress />
+        </section>
     );
 }
 

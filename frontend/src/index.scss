@@ -1,23 +1,29 @@
 @import "src/defaultSettings";
 
-* {
-  box-sizing: border-box;
-  padding: 0;
+html, body {
+  height: 100%;
   margin: 0;
-  color: $font-color;
-}
-
-body {
   font-family: sans-serif;
   font-size: 16px;
+  color: $font-color;
 
   background: radial-gradient(at 100% 0,
           #206E47 0%,
           #030E0A 100%);
 }
 
-div#root {
+a {
+  text-decoration: none;
+  color: unset;
+}
+
+#root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
+
+#root section {
+  flex: 1 0 auto;
+}
+

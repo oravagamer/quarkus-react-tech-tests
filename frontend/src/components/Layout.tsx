@@ -6,9 +6,11 @@ import Footer from "./layout/Footer.tsx";
 const Layout = () => {
     return (
         <>
-            <NavBar />
-            <Outlet />
-            <Footer />
+            <header>
+                <NavBar/>
+            </header>
+            <Outlet/>
+            <Footer/>
         </>
     );
 }
