@@ -6,5 +6,7 @@ CREATE TABLE galleries
     name        VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(255),
     created     TIMESTAMP   NOT NULL,
-    edited      TIMESTAMP   NOT NULL
+    edited      TIMESTAMP   NOT NULL,
+    thumbnail   BIGINT      NOT NULL,
+    CONSTRAINT picture_thumbnail FOREIGN KEY (thumbnail) REFERENCES pictures(id)
 );

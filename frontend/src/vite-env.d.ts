@@ -4,7 +4,7 @@ interface Gallery {
     description: string,
     created: Date,
     edited: Date,
-    pid?: number
+    thumbnail?: number
 }
 
 interface Picture {

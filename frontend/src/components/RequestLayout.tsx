@@ -1,5 +1,6 @@
 import {FC, ReactNode} from "react";
 import {AxiosError} from "axios";
+import {CircularProgress} from "@mui/material";
 
 interface Props {
     children: ReactNode
@@ -10,7 +11,7 @@ interface Props {
 
 const RequestLayout: FC<Props> = (props) => {
     if (props.loading) return <section id={props.id}>
-        <div>Loading...</div>
+        <CircularProgress sx={{ scale: "-1 1" }} />
     </section>
 
     if (props.error) {

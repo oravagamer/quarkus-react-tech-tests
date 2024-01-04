@@ -25,11 +25,11 @@ public class GalleriesService {
     DbDAO dbDAO;
 
     public Response getGalleriesInfo() {
-        return Response.ok(dbDAO.read("SELECT id, name, description, created, edited, pid FROM galleries JOIN pic_in_gal pig on galleries.id = pig.gid WHERE thumbnail = TRUE ORDER BY created")).build();
+        return Response.ok(dbDAO.read("SELECT id, name, description, created, edited, thumbnail FROM galleries ORDER BY created")).build();
     }
 
     public void createGallery(String name, String description) {
-        dbDAO.createUpdateDelete("INSERT INTO galleries(name, description, created, edited) VALUES (?, ?, current_timestamp, current_timestamp)", name, description);
+        dbDAO.createUpdateDelete("INSERT INTO galleries(name, description, created, edited, thumbnail) VALUES (?, ?, current_timestamp, current_timestamp, 1)", name, description);
     }
 
     public void changeGalName(Long id, String name) {
@@ -106,7 +106,6 @@ public class GalleriesService {
     }
 
     public void setPictureAsThumbnail(Long pid, Long gid) {
-        dbDAO.createUpdateDelete("UPDATE pic_in_gal SET thumbnail = FALSE WHEN thumbnail = TRUE AND gid = ?", gid);
-        dbDAO.createUpdateDelete("UPDATE pic_in_gal SET thumbnail = TRUE WHERE pid = ? AND gid = ?", pid, gid);
+        dbDAO.createUpdateDelete("UPDATE galleries SET thumbnail = ? WHERE gid = ?", pid, gid);
     }
 }

@@ -12,7 +12,7 @@ const Galleries = () => {
             {
                 data?.map(gallery =>
                     <div className="gallery" key={gallery.id}>
-                        <img src={`${backendUrl}/picture/${gallery?.pid}`} alt={`${gallery.name} thumbnail`} />
+                        <img src={`${backendUrl}/picture/${gallery?.thumbnail}`} alt={`${gallery.name} thumbnail`} />
                         <h1>{gallery?.name}</h1>
                         <h4>{gallery?.description}</h4>
                         <Link to={gallery?.id.toString()}>More</Link>

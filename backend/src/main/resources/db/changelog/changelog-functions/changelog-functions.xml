@@ -4,10 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<!--    <changeSet id="pictures-inserts" author="inserts-changelog">-->
-<!--        <sqlFile path="pictures-inserts.sql" relativeToChangelogFile="true" dbms="postgresql"/>-->
-<!--    </changeSet>-->
-    <changeSet id="galleries-inserts" author="inserts-changelog">
-        <sqlFile path="galleries-inserts.sql" relativeToChangelogFile="true" dbms="postgresql"/>
+    <changeSet id="get_file_contents-function" author="functions-changelog">
+        <sqlFile path="get_file_contents.sql" relativeToChangelogFile="true" dbms="postgresql"/>
     </changeSet>
 </databaseChangeLog>
