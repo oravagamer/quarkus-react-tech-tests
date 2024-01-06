@@ -1,8 +1,7 @@
 import useAxios from "axios-hooks";
-import {backendUrl} from "../../settings.ts";
+import {backendUrl} from "../../data/settings.ts";
 import {Link} from "react-router-dom";
 import RequestLayout from "../../components/RequestLayout.tsx";
-import './Galleries.scss';
 
 const Galleries = () => {
     const [{data, loading, error}] = useAxios<Gallery[]>(`${backendUrl}/galleries`);

@@ -1,5 +1,3 @@
-import "./Home.scss";
-
 const Home = () => {
     return (
         <section id="home">Home</section>

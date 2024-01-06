@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
 interface Gallery {
     id: number,
     name: string,

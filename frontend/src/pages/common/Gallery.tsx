@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import useAxios from "axios-hooks";
-import {backendUrl} from "../../settings.ts";
+import {backendUrl} from "../../data/settings.ts";
 import RequestLayout from "../../components/RequestLayout.tsx";
 
 const Gallery = () => {
