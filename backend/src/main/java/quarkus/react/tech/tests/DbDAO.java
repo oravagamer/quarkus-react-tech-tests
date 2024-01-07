@@ -98,7 +98,9 @@ public class DbDAO {
 
     void preparedStatementMap(PreparedStatement ps, Object... args) throws SQLException {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].getClass().isNestmateOf(Long.class)) {
+            if (args[i] == null) {
+                ps.setNull(i + 1, Types.NULL);
+            } else if (args[i].getClass().isNestmateOf(Long.class)) {
                 ps.setLong(i + 1, ((Long) args[i]));
             } else if (args[i].getClass().isNestmateOf(String.class)) {
                 ps.setString(i + 1, ((String) args[i]));
