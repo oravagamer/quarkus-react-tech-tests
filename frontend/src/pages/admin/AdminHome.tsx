@@ -1,6 +1,12 @@
+import {Box, Container} from "@mui/material";
+
 const AdminHome = () => {
     return (
-        <section id="admin-home">Admin Home</section>
+        <Box component="section" id="section">
+            <Container>
+                Admin Home
+            </Container>
+        </Box>
     );
 }
 

@@ -1,11 +1,11 @@
-import {CircularProgress} from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 const LoadingPage = () => {
     return (
-        <section id="loading">
+        <Box component="section" id="loading">
             <CircularProgress />
-        </section>
+        </Box>
     );
-}
+};
 
 export default LoadingPage;
