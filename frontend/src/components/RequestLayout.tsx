@@ -14,7 +14,7 @@ const RequestLayout: FC<Props> = (props) => {
     if (props.loading)
         return (
             <Box component="section" id={props.id} className={props.className}>
-                <Container>
+                <Container maxWidth={false}>
                     <CircularProgress sx={{ scale: "-1 1" }} />
                 </Container>
             </Box>
@@ -23,7 +23,7 @@ const RequestLayout: FC<Props> = (props) => {
     if (props.error) {
         return (
             <Box component="section" id={props.id} className={props.className}>
-                <Container>
+                <Container maxWidth={false}>
                     <h1>{props.error.response?.status}</h1>
                     <h3>{props.error.message}</h3>
                     <h5>{props.error.code}</h5>
@@ -39,7 +39,7 @@ const RequestLayout: FC<Props> = (props) => {
             className={props.className}
             sx={{ maxWidth: "unset" }}
         >
-            <Container>{props.children}</Container>
+            <Container maxWidth={false}>{props.children}</Container>
         </Box>
     );
 };
