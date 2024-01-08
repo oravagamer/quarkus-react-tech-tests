@@ -65,7 +65,7 @@ const App = () => {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box>
                 <CssBaseline />
                 <RouterProvider router={router} />
             </Box>

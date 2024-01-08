@@ -5,7 +5,12 @@ const Footer = () => {
     return (
         <Box component="footer">
             <Container maxWidth={false}>
-                <Grid container spacing={2} justify-content="space-between">
+                <Grid
+                    container
+                    spacing={2}
+                    justify-content="space-between"
+                    sx={{ marginTop: 0, marginLeft: 0 }}
+                >
                     <Grid item xs={12} sm={6} md={3}>
                         <Typography variant="h2" gutterBottom>
                             Oravix
