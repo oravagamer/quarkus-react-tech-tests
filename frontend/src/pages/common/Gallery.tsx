@@ -1,26 +1,25 @@
-import {Link, useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAxios from "axios-hooks";
-import {backendUrl} from "../../data/settings.ts";
+import { backendUrl } from "../../data/settings.ts";
 import RequestLayout from "../../components/RequestLayout.tsx";
+import GallerySection from "../../components/Gallery/GallerySection.tsx";
+import GalleryCard from "../../components/Gallery/GalleryCard.tsx";
 
 const Gallery = () => {
-    let {gid} = useParams();
-    const [{data, loading, error}] = useAxios<[Gallery, Picture[]]>(`${backendUrl}/galleries/${gid}`);
+    let { gid } = useParams();
+    const [{ data, loading, error }] = useAxios<[Gallery, Picture[]]>(
+        `${backendUrl}/galleries/${gid}`,
+    );
 
     return (
         <RequestLayout loading={loading} error={error} id="gallery">
-            <h1>Gallery {data?.[0].name}</h1>
-            <Link to="..">Go Back</Link>
-            {
-                data?.[1].map(picture =>
-                    <div className="image" key={picture.id.toString()}>
-                        <img src={`${backendUrl}/picture/${picture.id}`} alt={`Picture ${picture.id}`}/>
-                        <h4>{picture.description}</h4>
-                    </div>
-                )
-            }
+            <GallerySection galleryName={data?.[0].name}>
+                {data?.[1].map((picture) => (
+                    <GalleryCard picture={picture} key={picture.id} />
+                ))}
+            </GallerySection>
         </RequestLayout>
     );
-}
+};
 
 export default Gallery;

@@ -58,7 +58,7 @@ public class PicturesDAO {
             long id = rs.getLong("id");
             rs.close();
             ps.close();
-            ps = c.prepareStatement("INSERT INTO pic_in_gal(pid, gid, pic_order, thumbnail) VALUES (?, 1, coalesce((SELECT max(pic_order) + 1 FROM pic_in_gal), 1), (SELECT CASE WHEN count(thumbnail) = 1 THEN FALSE ELSE TRUE END FROM pic_in_gal WHERE gid = 1 AND thumbnail = TRUE))");
+            ps = c.prepareStatement("INSERT INTO pic_in_gal(pid, gid, pic_order) VALUES (?, 1, coalesce((SELECT max(pic_order) + 1 FROM pic_in_gal), 1))");
             ps.setLong(1, id);
             ps.executeUpdate();
             c.setAutoCommit(true);
