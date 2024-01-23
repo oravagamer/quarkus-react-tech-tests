@@ -1,12 +1,9 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
-interface Props {
-    id?: string;
-    className?: string;
-    children?: ReactNode;
+interface Props extends DefaultProps {
     galleryName?: string;
 }
 

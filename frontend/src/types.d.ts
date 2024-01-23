@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 interface Gallery {
     id: number;
     name: string;
@@ -12,4 +14,10 @@ interface Picture {
     description: string;
     uploaded: Date;
     edited: Date;
+}
+
+interface DefaultProps {
+    id?: string;
+    className?: string;
+    children?: ReactNode;
 }

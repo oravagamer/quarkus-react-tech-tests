@@ -9,30 +9,28 @@ import {
     Skeleton,
     Typography,
 } from "@mui/material";
-import { backendUrl } from "../../data/settings.ts";
+import { backendUrl } from "../../../data/settings.ts";
 import { Link } from "react-router-dom";
 
-interface Props {
-    id?: string;
-    className?: string;
+interface Props extends DefaultProps {
+    prefix?: string;
     gallery: Gallery;
 }
 
 const GalleriesCard: FC<Props> = (props) => {
     const [pictureLoading, setPictureLoading] = useState(true);
 
-    useEffect(() => {
-    }, [pictureLoading]);
+    useEffect(() => {}, [pictureLoading]);
 
     return (
         <Grid item xs={1} className="gallery" justifyContent="center">
-            <Card sx={{minWidth: 300, height: "100%"}}>
+            <Card sx={{ minWidth: 300, height: "100%" }}>
                 <CardMedia
                     component="img"
                     image={`${backendUrl}/picture/${props.gallery?.thumbnail}`}
                     onLoad={() => setPictureLoading(false)}
                     alt={`${props.gallery.name} thumbnail`}
-                    sx={{display: !pictureLoading ? "block" : "none"}}
+                    sx={{ display: !pictureLoading ? "block" : "none" }}
                 />
                 <CardMedia
                     component={Skeleton}
@@ -58,7 +56,9 @@ const GalleriesCard: FC<Props> = (props) => {
                         size="small"
                         color="primary"
                         component={Link}
-                        to={props.gallery?.id.toString()}
+                        to={`${props.gallery?.id.toString()}/${
+                            props.prefix !== undefined ? props.prefix : ""
+                        }`}
                     >
                         More
                     </Button>

@@ -1,34 +1,32 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { AxiosError } from "axios";
 import { Box, CircularProgress, Container } from "@mui/material";
+import Section from "./Section.tsx";
 
-interface Props {
-    children: ReactNode;
+interface Props extends DefaultProps {
     loading: boolean;
     error: AxiosError<any, any> | null;
-    id?: string;
-    className?: string;
 }
 
 const RequestLayout: FC<Props> = (props) => {
     if (props.loading)
         return (
-            <Box component="section" id={props.id} className={props.className}>
+            <Section id={props.id} className={props.className}>
                 <Container maxWidth={false}>
                     <CircularProgress sx={{ scale: "-1 1" }} />
                 </Container>
-            </Box>
+            </Section>
         );
 
     if (props.error) {
         return (
-            <Box component="section" id={props.id} className={props.className}>
+            <Section id={props.id} className={props.className}>
                 <Container maxWidth={false}>
                     <h1>{props.error.response?.status}</h1>
                     <h3>{props.error.message}</h3>
                     <h5>{props.error.code}</h5>
                 </Container>
-            </Box>
+            </Section>
         );
     }
 

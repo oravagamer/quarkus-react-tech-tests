@@ -1,10 +1,11 @@
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import Section from "../components/Section.tsx";
 
 const LoadingPage = () => {
     return (
-        <Box component="section" id="loading">
+        <Section id="loading-page">
             <CircularProgress />
-        </Box>
+        </Section>
     );
 };
 

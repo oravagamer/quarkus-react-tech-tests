@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import loadable from "@loadable/component";
 import Layout from "./layouts/layout/Layout.tsx";
@@ -7,6 +7,8 @@ import LoadingPage from "./pages/LoadingPage.tsx";
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useAppSelector } from "./context/hooks.ts";
 import { themeSelector } from "./context/themeSlice.ts";
+import LoginRequired from "./components/keycloak/LoginRequired.tsx";
+import AdminGalleries from "./pages/admin/AdminGalleries.tsx";
 
 const App = () => {
     const Home = loadComponentAsync("./pages/common/Home.tsx");
@@ -43,7 +45,7 @@ const App = () => {
                                     element: <Galleries />,
                                 },
                                 {
-                                    path: ":gid",
+                                    path: ":gid/:pid?",
                                     element: <Gallery />,
                                 },
                             ],
@@ -52,10 +54,35 @@ const App = () => {
                 },
                 {
                     path: "admin",
+                    element: (
+                        <LoginRequired>
+                            <Outlet />
+                        </LoginRequired>
+                    ),
                     children: [
                         {
                             index: true,
                             element: <AdminHome />,
+                        },
+                        {
+                            path: "galleries",
+                            children: [
+                                {
+                                    index: true,
+                                    element: <AdminGalleries />,
+                                },
+                                {
+                                    path: ":gid",
+                                    children: [
+                                        {
+                                            path: "edit",
+                                        },
+                                        {
+                                            index: true,
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                     ],
                 },

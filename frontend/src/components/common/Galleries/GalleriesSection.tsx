@@ -1,11 +1,7 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { Grid } from "@mui/material";
 
-interface Props {
-    id?: string;
-    className?: string;
-    children?: ReactNode;
-}
+interface Props extends DefaultProps {}
 
 const GalleriesSection: FC<Props> = (props) => {
     return (

@@ -1,30 +1,30 @@
 import { FC, useState } from "react";
-import { Backdrop, Box, Button, Grid } from "@mui/material";
-import { backendUrl } from "../../data/settings.ts";
+import { Backdrop, Button, Grid } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom";
+import GalleryImage from "./GalleryImage.tsx";
 
-interface Props {
-    id?: string;
-    className?: string;
-    open: boolean;
-    onClick: (prop: boolean) => void;
-    picture: Picture;
+interface Props extends DefaultProps {
+    onToLeft: (pid: number | undefined) => number | undefined;
+    onToRight: (pid: number | undefined) => number | undefined;
+    picture: Picture | undefined;
 }
 
 const GalleryBackdrop: FC<Props> = (props) => {
     const [next, setNext] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <Backdrop
-            open={props.open}
+            open={props.picture != undefined}
             onClick={() => {
                 if (!next) {
-                    props.onClick(false);
+                    navigate("./../");
                 }
             }}
         >
-            <Grid container columns={7} alignItems="center">
+            <Grid container columns={7} alignItems="stretch">
                 <Grid
                     item
                     xs={1}
@@ -36,6 +36,16 @@ const GalleryBackdrop: FC<Props> = (props) => {
                         type="button"
                         onPointerEnter={() => setNext(true)}
                         onPointerLeave={() => setNext(false)}
+                        onClick={() =>
+                            navigate(
+                                `./../${
+                                    props.onToLeft(props.picture?.id) !==
+                                    undefined
+                                        ? props.onToLeft(props.picture?.id)
+                                        : props.picture?.id
+                                }`,
+                            )
+                        }
                     >
                         <ArrowBackIosIcon />
                     </Button>
@@ -44,14 +54,14 @@ const GalleryBackdrop: FC<Props> = (props) => {
                     item
                     xs={5}
                     justifyContent="center"
-                    alignContent="center"
+                    alignItems="center"
                     display="flex"
+                    minWidth={50}
+                    minHeight={50}
                 >
-                    <Box
-                        sx={{ width: "100%", height: "auto" }}
-                        src={`${backendUrl}/picture/${props.picture.id}`}
-                        alt={`Picture ${props.picture.id}`}
-                        component="img"
+                    <GalleryImage
+                        pid={props.picture?.id}
+                        key={props.picture?.id}
                     />
                 </Grid>
                 <Grid
@@ -65,6 +75,16 @@ const GalleryBackdrop: FC<Props> = (props) => {
                         type="button"
                         onPointerEnter={() => setNext(true)}
                         onPointerLeave={() => setNext(false)}
+                        onClick={() =>
+                            navigate(
+                                `./../${
+                                    props.onToRight(props.picture?.id) !==
+                                    undefined
+                                        ? props.onToRight(props.picture?.id)
+                                        : props.picture?.id
+                                }`,
+                            )
+                        }
                     >
                         <ArrowForwardIosIcon />
                     </Button>

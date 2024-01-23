@@ -22,34 +22,52 @@ import { useState } from "react";
 import "./NavBar.scss";
 import { useAppDispatch, useAppSelector } from "../../context/hooks.ts";
 import { changeTheme, themeSelector } from "../../context/themeSlice.ts";
+import LoginRequired from "../../components/keycloak/LoginRequired.tsx";
 
 interface Page {
     name: string;
     url: string;
 }
 
-const pages: Page[] = [
-    {
-        name: "Home",
-        url: "/",
-    },
-    {
-        name: "Gallery",
-        url: "/gallery",
-    },
-    {
-        name: "Calendar",
-        url: "/calendar",
-    },
-    {
-        name: "Chat",
-        url: "/chat",
-    },
-    {
-        name: "Files",
-        url: "/files",
-    },
-];
+interface Pages {
+    common: Page[];
+    admin: Page[];
+}
+
+const pages: Pages = {
+    common: [
+        {
+            name: "Home",
+            url: "/",
+        },
+        {
+            name: "Gallery",
+            url: "/gallery",
+        },
+        {
+            name: "Calendar",
+            url: "/calendar",
+        },
+        {
+            name: "Chat",
+            url: "/chat",
+        },
+        {
+            name: "Files",
+            url: "/files",
+        },
+    ],
+    admin: [
+        {
+            name: "Admin Home",
+            url: "/",
+        },
+        {
+            name: "Admin Galleries",
+            url: "/galleries",
+        },
+    ],
+};
 
 const NavBar = () => {
     const [openedDrawer, setOpenedDrawer] = useState(false);
@@ -141,12 +159,13 @@ const NavBar = () => {
                                     </FormGroup>
                                 </ListItem>
                                 <Divider />
-                                {pages.map((value) => {
+                                {pages.common.map((value) => {
                                     return (
                                         <ListItem key={value.name}>
                                             <ListItemButton
                                                 component={RouterNavLink}
                                                 to={value.url}
+                                                end
                                             >
                                                 {value.name}
                                             </ListItemButton>
@@ -154,6 +173,22 @@ const NavBar = () => {
                                     );
                                 })}
                                 <Divider />
+                                <LoginRequired>
+                                    {pages.admin.map((value) => {
+                                        return (
+                                            <ListItem key={value.name}>
+                                                <ListItemButton
+                                                    component={RouterNavLink}
+                                                    to={`/admin${value.url}`}
+                                                    end
+                                                >
+                                                    {value.name}
+                                                </ListItemButton>
+                                            </ListItem>
+                                        );
+                                    })}
+                                    <Divider />
+                                </LoginRequired>
                                 <ListItem>
                                     <ListItemButton>
                                         <ListItemText>Login</ListItemText>

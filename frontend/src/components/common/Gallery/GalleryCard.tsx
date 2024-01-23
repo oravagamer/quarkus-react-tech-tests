@@ -1,17 +1,15 @@
 import { Card, CardMedia, Grid, Skeleton } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import { backendUrl } from "../../data/settings.ts";
-import GalleryBackdrop from "./GalleryBackdrop.tsx";
+import { backendUrl } from "../../../data/settings.ts";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-    id?: string;
-    className?: string;
+interface Props extends DefaultProps {
     picture: Picture;
 }
 
 const GalleryCard: FC<Props> = (props) => {
     const [pictureLoading, setPictureLoading] = useState(true);
-    const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {}, [pictureLoading]);
     return (
@@ -22,13 +20,8 @@ const GalleryCard: FC<Props> = (props) => {
                     src={`${backendUrl}/picture/${props.picture.id}`}
                     alt={`Picture ${props.picture.id}`}
                     onLoad={() => setPictureLoading(false)}
+                    onClick={() => navigate(`./${props.picture.id}`)}
                     sx={{ display: !pictureLoading ? "block" : "none" }}
-                    onClick={() => setOpen(true)}
-                />
-                <GalleryBackdrop
-                    picture={props.picture}
-                    open={open}
-                    onClick={setOpen}
                 />
                 <CardMedia
                     component={Skeleton}

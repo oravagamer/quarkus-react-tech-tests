@@ -1,10 +1,11 @@
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import Section from "../../components/Section.tsx";
 
 const AdminHome = () => {
     return (
-        <Box component="section" id="section">
+        <Section id="admin-home">
             <Container maxWidth={false}>Admin Home</Container>
-        </Box>
+        </Section>
     );
 };
 
