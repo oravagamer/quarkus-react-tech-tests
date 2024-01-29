@@ -1,19 +1,15 @@
 package quarkus.react.tech.tests.gallery.pictures;
 
-import io.quarkus.runtime.BlockingOperationControl;
-import io.smallrye.common.annotation.Blocking;
-import io.smallrye.common.annotation.NonBlocking;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
-import quarkus.react.tech.tests.gallery.pictures.DTO.PictureUploadDTO;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.sql.SQLException;
 
 @Path("picture")
 public class PicturesResource {
@@ -23,8 +19,8 @@ public class PicturesResource {
     @Path("{id}")
     @GET
     @Produces("image/*")
-    @Blocking
-    public Uni<Response> downloadPicture(@PathParam("id") Long id) {
+    @Transactional
+    public Uni<Response> downloadPicture(@PathParam("id") Long id) throws SQLException, IOException {
         return Uni.createFrom().item(service.downloadPicture(id));
     }
 
@@ -32,7 +28,7 @@ public class PicturesResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
-    @Blocking
+    @Transactional
     public Uni<Response> uploadPicture(MultipartFormDataInput multipartFormDataInput) throws IOException {
         service.uploadPicture(multipartFormDataInput);
         return Uni.createFrom().item(Response.ok().build());
@@ -42,7 +38,7 @@ public class PicturesResource {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    @Blocking
+    @Transactional
     public void changeDescription(String description,
                                   @PathParam("id") Long id) {
         service.changeDescription(id, description);
@@ -52,7 +48,7 @@ public class PicturesResource {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    @Blocking
+    @Transactional
     public void deletePicture(@PathParam("id") Long id) {
         service.deletePicture(id);
     }
