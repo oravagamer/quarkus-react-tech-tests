@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://dpg-clf43b4p3ifc73ek70o0-a.frankfurt-postgres.render.com:5432/quarkus</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="postgres@localhost" uuid="e116f255-7162-4a4c-a86b-9370004f4b6d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

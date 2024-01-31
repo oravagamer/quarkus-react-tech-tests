@@ -2,11 +2,12 @@ package quarkus.react.tech.tests.gallery.galleries;
 
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
 import quarkus.react.tech.tests.gallery.PictureInGalleryID;
-import quarkus.react.tech.tests.gallery.PicturesOrderDAO;
+import quarkus.react.tech.tests.gallery.PictureInGalleryRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 public class GalleriesService {
 
     Logger logger = Logger.getLogger(GalleriesService.class);
+
+    @Inject
+    PictureInGalleryRepository pictureInGalleryRepository;
 
     public Response getGalleriesInfo() {
         return Response.ok(GalleryEntity.findAll(Sort.by("created")).project(GalleryDataDTO.class).list()).build();
@@ -49,13 +53,13 @@ public class GalleriesService {
 
     public Response getGalleryInfo(Long id) {
         ArrayList<Object> list = new ArrayList<>();
-        list.add(GalleryEntity.find("id", id).project(GalleryDataDTO.class).firstResult());
-        list.add(PicturesOrderDAO.findPicturesByGID(id));
+        list.add(GalleryEntity.findById(id));
+        list.add(pictureInGalleryRepository.findPicturesByGID(id));
         return Response.ok().entity(list).build();
     }
 
     public Response changePictureOrder(ArrayList<Long> ids, Long gid) {
-        return Response.ok().entity(PicturesOrderDAO.reOrderPicturesInGallery(ids, gid)).build();
+        return Response.ok().entity(pictureInGalleryRepository.reOrderPicturesInGallery(ids, gid)).build();
     }
 
     public void removePictureFromGallery(Long pid, Long gid) {
@@ -67,7 +71,7 @@ public class GalleriesService {
     }
 
     public void addPictureToGallery(Long pid, Long gid) {
-        PicturesOrderDAO.addPictureToGallery(pid, gid);
+        pictureInGalleryRepository.addPictureToGallery(pid, gid);
 
     }
 
