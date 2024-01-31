@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="pictures" author="tables-changelog">
+        <sqlFile path="./pictures.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="galleries" author="tables-changelog">
+        <sqlFile path="./galleries.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="pic_in_gal" author="tables-changelog">
+        <sqlFile path="./pic_in_gallery.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,4 +1,4 @@
-package quarkus.react.tech.tests.gallery.galleries.DTO;
+package quarkus.react.tech.tests.gallery.galleries;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
@@ -16,12 +16,15 @@ public class GalleryDataDTO implements Serializable {
 
     private final Timestamp edited;
 
-    public GalleryDataDTO(Long id, String name, String description, Timestamp created, Timestamp edited) {
+    private final Long thumbnail;
+
+    public GalleryDataDTO(Long id, String name, String description, Timestamp created, Timestamp edited, Long thumbnail) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
         this.edited = edited;
+        this.thumbnail = thumbnail;
     }
 
     public Long getId() {
@@ -44,6 +47,10 @@ public class GalleryDataDTO implements Serializable {
         return edited;
     }
 
+    public Long getThumbnail() {
+        return thumbnail;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,12 +60,13 @@ public class GalleryDataDTO implements Serializable {
                 Objects.equals(this.name, entity.name) &&
                 Objects.equals(this.description, entity.description) &&
                 Objects.equals(this.created, entity.created) &&
-                Objects.equals(this.edited, entity.edited);
+                Objects.equals(this.edited, entity.edited) &&
+                Objects.equals(this.thumbnail, entity.thumbnail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created, edited);
+        return Objects.hash(id, name, description, created, edited, thumbnail);
     }
 
     @Override
@@ -68,6 +76,7 @@ public class GalleryDataDTO implements Serializable {
                 "name = " + name + ", " +
                 "description = " + description + ", " +
                 "created = " + created + ", " +
-                "edited = " + edited + ")";
+                "edited = " + edited + ", " +
+                "thumbnail = " + thumbnail + ")";
     }
 }

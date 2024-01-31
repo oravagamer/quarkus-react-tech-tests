@@ -3,6 +3,7 @@ package quarkus.react.tech.tests.gallery.pictures;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
+import quarkus.react.tech.tests.gallery.galleries.GalleryEntity;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -70,6 +71,9 @@ public class PictureEntity extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "picture")
     Set<PictureInGalleryEntity> pictureInGallerySet;
+
+    @OneToMany(mappedBy = "picture")
+    Set<GalleryEntity> gallerySet;
 
     public Long getId() {
         return id;

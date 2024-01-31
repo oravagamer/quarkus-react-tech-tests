@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="default-picture" author="inserts-changelog">
+        <insert tableName="pictures">
+            <column name="id" valueComputed="nextval('pictures_id_seq')"/>
+            <column name="filename" value="default-gallery-settings"/>
+            <column name="datatype" value="jpg"/>
+            <column name="description" value="Default gallery thumbnail"/>
+            <column name="data" valueBlobFile="/../../../public/default-gallery-settings.jpg"/>
+            <column name="thumbnail" valueBlobFile="/../../../public/default-gallery-settings.jpg"/>
+            <column name="uploaded" valueDate="current_timestamp"/>
+            <column name="edited" valueDate="current_timestamp"/>
+        </insert>
+    </changeSet>
+    <changeSet id="default-gallery" author="inserts-changelog">
+        <insert tableName="galleries">
+            <column name="id" valueSequenceNext="galleries_id_seq"/>
+            <column name="name" value="Default Gallery"/>
+            <column name="description" value="Default gallery"/>
+            <column name="created" valueDate="current_timestamp"/>
+            <column name="edited" valueDate="current_timestamp"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

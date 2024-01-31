@@ -1,4 +1,4 @@
-package quarkus.react.tech.tests.gallery.pictures.DTO;
+package quarkus.react.tech.tests.gallery.pictures;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

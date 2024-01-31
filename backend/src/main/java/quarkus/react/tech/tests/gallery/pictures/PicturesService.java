@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.multipart.FormValue;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
+import quarkus.react.tech.tests.gallery.PicturesOrderDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -35,8 +36,9 @@ public class PicturesService {
                 .setDescription(desc)
                 .setUploaded(Timestamp.valueOf(LocalDateTime.now()))
                 .setEdited(Timestamp.valueOf(LocalDateTime.now()))
-                .setData(file.getFileItem().getInputStream().readAllBytes());
-        entity.persist();
+                .setData(file.getFileItem().getInputStream().readAllBytes())
+                .persist();
+        PicturesOrderDAO.addPictureToGallery(entity.getId(), 1L);
     }
 
     public void changeDescription(Long id, String description) {
