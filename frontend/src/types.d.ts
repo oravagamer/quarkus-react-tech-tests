@@ -6,7 +6,7 @@ interface Gallery {
     description: string;
     created: Date;
     edited: Date;
-    thumbnail?: number;
+    thumbnail?: number | null;
 }
 
 interface Picture {

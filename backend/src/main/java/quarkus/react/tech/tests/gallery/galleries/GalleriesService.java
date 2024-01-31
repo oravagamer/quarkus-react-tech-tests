@@ -5,9 +5,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+import quarkus.react.tech.tests.gallery.PictureInGalleryDAO;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
 import quarkus.react.tech.tests.gallery.PictureInGalleryID;
-import quarkus.react.tech.tests.gallery.PictureInGalleryRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,10 +19,10 @@ public class GalleriesService {
     Logger logger = Logger.getLogger(GalleriesService.class);
 
     @Inject
-    PictureInGalleryRepository pictureInGalleryRepository;
+    PictureInGalleryDAO pictureInGalleryDAO;
 
     public Response getGalleriesInfo() {
-        return Response.ok(GalleryEntity.findAll(Sort.by("created")).project(GalleryDataDTO.class).list()).build();
+        return Response.ok(GalleryEntity.findAll(Sort.by("created")).project(GalleryEntityDTO.class).list()).build();
     }
 
     public void createGallery(String name, String description) {
@@ -53,13 +53,18 @@ public class GalleriesService {
 
     public Response getGalleryInfo(Long id) {
         ArrayList<Object> list = new ArrayList<>();
-        list.add(GalleryEntity.findById(id));
-        list.add(pictureInGalleryRepository.findPicturesByGID(id));
+        list.add(
+                GalleryEntity
+                        .find("id", id)
+                        .project(GalleryEntityDTO.class)
+                        .firstResult()
+        );
+        list.add(pictureInGalleryDAO.findPicturesByGID(id));
         return Response.ok().entity(list).build();
     }
 
     public Response changePictureOrder(ArrayList<Long> ids, Long gid) {
-        return Response.ok().entity(pictureInGalleryRepository.reOrderPicturesInGallery(ids, gid)).build();
+        return Response.ok().entity(pictureInGalleryDAO.reOrderPicturesInGallery(ids, gid)).build();
     }
 
     public void removePictureFromGallery(Long pid, Long gid) {
@@ -71,7 +76,7 @@ public class GalleriesService {
     }
 
     public void addPictureToGallery(Long pid, Long gid) {
-        pictureInGalleryRepository.addPictureToGallery(pid, gid);
+        pictureInGalleryDAO.addPictureToGallery(pid, gid);
 
     }
 

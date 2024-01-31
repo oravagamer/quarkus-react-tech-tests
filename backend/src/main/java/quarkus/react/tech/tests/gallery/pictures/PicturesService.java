@@ -6,7 +6,7 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.multipart.FormValue;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
-import quarkus.react.tech.tests.gallery.PictureInGalleryRepository;
+import quarkus.react.tech.tests.gallery.PictureInGalleryDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class PicturesService {
     Logger logger = Logger.getLogger(PicturesService.class);
 
     @Inject
-    PictureInGalleryRepository pictureInGalleryRepository;
+    PictureInGalleryDAO pictureInGalleryDAO;
 
     public Response downloadPicture(Long id) throws SQLException, IOException {
 
@@ -42,7 +42,7 @@ public class PicturesService {
                 .setEdited(Timestamp.valueOf(LocalDateTime.now()))
                 .setData(file.getFileItem().getInputStream().readAllBytes())
                 .persist();
-        pictureInGalleryRepository.addPictureToGallery(entity.getId(), 1L);
+        pictureInGalleryDAO.addPictureToGallery(entity.getId(), 1L);
     }
 
     public void changeDescription(Long id, String description) {

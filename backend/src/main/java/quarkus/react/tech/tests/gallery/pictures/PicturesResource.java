@@ -6,6 +6,9 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
 
 import java.io.IOException;
@@ -29,10 +32,35 @@ public class PicturesResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     @Transactional
-    public Uni<Response> uploadPicture(MultipartFormDataInput multipartFormDataInput) throws IOException {
+    @Operation(
+            summary = "Upload picture",
+            description = "Upload of picture file"
+    )
+    public Uni<Response> uploadPicture(
+            @RequestBody(
+                    description = "test",
+                    name = "file",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_OCTET_STREAM
+                            )
+                    }
+            )
+            MultipartFormDataInput multipartFormDataInput
+    ) throws IOException {
         service.uploadPicture(multipartFormDataInput);
         return Uni.createFrom().item(Response.ok().build());
     }
+
+//    @Path("jhugtfdvfcrdfyt")
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    @Produces(MediaType.TEXT_PLAIN)
+//    public void Test(
+//            PicturesUploadForm form
+//    ) {
+//        Log.info(form.fileUpload.length);
+//    }
 
     @Path("{id}/pic-desc")
     @PUT

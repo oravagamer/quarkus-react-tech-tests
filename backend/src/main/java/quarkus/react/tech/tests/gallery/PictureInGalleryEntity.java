@@ -1,32 +1,28 @@
 package quarkus.react.tech.tests.gallery;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.logging.Log;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import quarkus.react.tech.tests.gallery.galleries.GalleryEntity;
 import quarkus.react.tech.tests.gallery.pictures.PictureEntity;
+import quarkus.react.tech.tests.gallery.pictures.PictureEntityDTO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
 
-@Entity
-@Table(
-        name = "pic_in_gallery"
-)
-@NamedQueries({
-        @NamedQuery(
+@NamedNativeQueries({
+        @NamedNativeQuery(
                 name = "PicturesOrderDAO.readPictureOrder",
-                query = "SELECT pic.id, pic.description, pic.uploaded, pic.edited " +
-                        "FROM PictureInGalleryEntity pig " +
-                        "JOIN PictureEntity pic " +
-                        "ON pic.id = pig.id.pid " +
-                        "WHERE pig.id.gid = ?1" +
-                        "ORDER BY pig.ord"
-        ),
+                query = "SELECT pic.id, description, uploaded, edited " +
+                        "FROM pic_in_gallery AS pig " +
+                        "JOIN pictures AS pic " +
+                        "ON pig.picture_id = pic.id " +
+                        "WHERE pig.gallery_id = ? " +
+                        "ORDER BY pig.pic_order",
+                resultSetMapping = "PictureEntityDTO"
+        )
+})
+@NamedQueries({
         @NamedQuery(
                 name = "PicturesOrderDAO.countPicturesInGallery",
                 query = "SELECT COUNT(*) " +
@@ -48,6 +44,36 @@ import java.util.List;
                         "AND pig.id.gid = ?3"
         )
 })
+@SqlResultSetMapping(
+        name = "PictureEntityDTO",
+        classes = {
+                @ConstructorResult(
+                        targetClass = PictureEntityDTO.class,
+                        columns = {
+                                @ColumnResult(
+                                        name = "id",
+                                        type = Long.class
+                                ),
+                                @ColumnResult(
+                                        name = "description",
+                                        type = String.class
+                                ),
+                                @ColumnResult(
+                                        name = "uploaded",
+                                        type = Timestamp.class
+                                ),
+                                @ColumnResult(
+                                        name = "edited",
+                                        type = Timestamp.class
+                                )
+                        }
+                )
+        }
+)
+@Entity
+@Table(
+        name = "pic_in_gallery"
+)
 public class PictureInGalleryEntity extends PanacheEntityBase {
     @EmbeddedId
     private PictureInGalleryID id;

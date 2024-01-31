@@ -27,7 +27,11 @@ const GalleriesCard: FC<Props> = (props) => {
             <Card sx={{ minWidth: 300, height: "100%" }}>
                 <CardMedia
                     component="img"
-                    image={`${backendUrl}/picture/${props.gallery?.thumbnail}`}
+                    image={`${backendUrl}/picture/${
+                        props.gallery?.thumbnail === null
+                            ? 1
+                            : props.gallery?.thumbnail
+                    }`}
                     onLoad={() => setPictureLoading(false)}
                     alt={`${props.gallery.name} thumbnail`}
                     sx={{ display: !pictureLoading ? "block" : "none" }}

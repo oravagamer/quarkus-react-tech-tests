@@ -3,5 +3,6 @@
   <component name="JpaBuddyIdeaProjectConfig" ddlActionDbType="postgres">
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="09fdb098-7033-48a7-8d61-06bae2bc164b__quarkus_quarkus_tests" />
   </component>
 </project>
