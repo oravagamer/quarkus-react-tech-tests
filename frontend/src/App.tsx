@@ -8,13 +8,15 @@ import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useAppSelector } from "./context/hooks.ts";
 import { themeSelector } from "./context/themeSlice.ts";
 import LoginRequired from "./components/keycloak/LoginRequired.tsx";
-import AdminGalleries from "./pages/admin/AdminGalleries.tsx";
 
 const App = () => {
     const Home = loadComponentAsync("./pages/common/Home.tsx");
     const Galleries = loadComponentAsync("./pages/common/Galleries.tsx");
     const Gallery = loadComponentAsync("./pages/common/Gallery.tsx");
     const AdminHome = loadComponentAsync("./pages/admin/AdminHome.tsx");
+    const AdminGalleries = loadComponentAsync(
+        "./pages/admin/AdminGalleries.tsx",
+    );
 
     const theme = useAppSelector(themeSelector);
 

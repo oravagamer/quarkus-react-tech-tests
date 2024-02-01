@@ -4,14 +4,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
-import org.jboss.resteasy.reactive.server.multipart.FormValue;
-import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 import quarkus.react.tech.tests.gallery.PictureInGalleryDAO;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ApplicationScoped
 public class PicturesService {
@@ -30,19 +31,26 @@ public class PicturesService {
         return response.build();
     }
 
-    public void uploadPicture(MultipartFormDataInput dataInput) throws IOException {
-        FormValue file = dataInput.getValues().get("file").iterator().next();
-        String desc = dataInput.getValues().get("description").iterator().next().getValue();
-        PictureEntity entity = new PictureEntity();
-        entity
-                .setFilename(file.getFileName().substring(0, file.getFileName().lastIndexOf(".")))
-                .setDatatype(file.getFileName().substring(file.getFileName().lastIndexOf(".") + 1))
-                .setDescription(desc)
-                .setUploaded(Timestamp.valueOf(LocalDateTime.now()))
-                .setEdited(Timestamp.valueOf(LocalDateTime.now()))
-                .setData(file.getFileItem().getInputStream().readAllBytes())
-                .persist();
-        pictureInGalleryDAO.addPictureToGallery(entity.getId(), 1L);
+    public void uploadPicture(List<FileUpload> files, List<String> descriptions) throws IOException {
+        for (int i = 0; i < files.size(); i++) {
+            PictureEntity entity = new PictureEntity();
+            String filename = files.get(i).fileName();
+            entity
+                    .setFilename(filename.substring(0, filename.lastIndexOf(".")))
+                    .setDatatype(filename.substring(filename.lastIndexOf(".") + 1))
+                    .setDescription(descriptions.size() == 1 ? descriptions.get(0) : descriptions.get(i))
+                    .setUploaded(Timestamp.valueOf(LocalDateTime.now()))
+                    .setEdited(Timestamp.valueOf(LocalDateTime.now()))
+                    .setData(
+                            Files.newInputStream(
+                                    files
+                                            .get(i)
+                                            .uploadedFile()
+                            ).readAllBytes()
+                    )
+                    .persist();
+            pictureInGalleryDAO.addPictureToGallery(entity.getId(), 1L);
+        }
     }
 
     public void changeDescription(Long id, String description) {
