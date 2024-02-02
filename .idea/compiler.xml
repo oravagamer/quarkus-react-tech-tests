@@ -5,6 +5,7 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.quarkus/quarkus-panache-common/3.6.0/6bc209c8007c4d87800187c3f21b97f2c1a99b08/quarkus-panache-common-3.6.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.quarkus/quarkus-arc/3.6.0/f82cc6d47f9db42f243d67373006ce43d1c2bb9/quarkus-arc-3.6.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.quarkus/quarkus-core/3.6.0/a4ef6d4c5eee96759709b52fd89f1b69b80aca4f/quarkus-core-3.6.0.jar" />
@@ -49,6 +50,13 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.5/dc6ea1875f4d64fbc85e1691c95b96a3d8569c90/asm-9.5.jar" />
         </processorPath>
         <module name="backend.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="backend.test" />
       </profile>
     </annotationProcessing>
   </component>
