@@ -1,11 +1,13 @@
 package quarkus.react.tech.tests.gallery.pictures;
 
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import quarkus.react.tech.tests.FileDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,7 +22,27 @@ public class PicturesResource {
     @Produces("image/*")
     @Transactional
     public Uni<Response> downloadPicture(@PathParam("id") Long id) throws SQLException, IOException {
-        return Uni.createFrom().item(service.downloadPicture(id));
+        FileDTO file = service.downloadPicture(id);
+        Response.ResponseBuilder response;
+        try {
+            response = Response.ok(file.data());
+        } catch (NullPointerException ex) {
+            return Uni
+                    .createFrom()
+                    .item(
+                            Response
+                                    .status(
+                                            Response.Status.NOT_FOUND
+                                    )
+                                    .build()
+                    );
+        }
+        response.header("Content-Disposition", "filename=" + file.filename() + "." + file.datatype());
+        response.header("Content-Type", "image/*");
+        Log.info(file.toString());
+        return Uni
+                .createFrom()
+                .item(response.build());
     }
 
     @Path("")
@@ -32,8 +54,8 @@ public class PicturesResource {
             @BeanParam PicturesUploadMultipartForm multipartForm
     ) throws IOException {
         service.uploadPicture(
-                multipartForm.files,
-                multipartForm.descriptions
+                multipartForm.getFiles(),
+                multipartForm.getDescriptions()
         );
         return Uni.createFrom().item(Response.ok().build());
     }

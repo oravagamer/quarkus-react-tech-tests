@@ -20,7 +20,12 @@ public class GalleriesResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Uni<Response> getGalleriesInfo() {
-        return Uni.createFrom().item(service.getGalleriesInfo());
+        return Uni
+                .createFrom()
+                .item(Response
+                        .ok()
+                        .entity(service.getGalleriesInfo())
+                        .build());
     }
 
     @Path("{id}/gal-name")
@@ -72,7 +77,14 @@ public class GalleriesResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Uni<Response> getGalleryInfo(@PathParam("id") Long id) {
-        return Uni.createFrom().item(service.getGalleryInfo(id));
+        return Uni
+                .createFrom()
+                .item(
+                        Response
+                                .ok()
+                                .entity(service.getGalleryInfo(id))
+                                .build()
+                );
     }
 
     @Path("{id}/ord")
@@ -82,7 +94,14 @@ public class GalleriesResource {
     @Transactional
     public Uni<Response> changePictureOrder(ArrayList<Long> ids,
                                             @PathParam("id") Long gid) {
-        return Uni.createFrom().item(service.changePictureOrder(ids, gid));
+        return Uni
+                .createFrom()
+                .item(
+                        Response
+                                .ok()
+                                .entity(service.changePictureOrder(ids, gid))
+                                .build()
+                );
     }
 
     @Path("{gid}/{pid}")

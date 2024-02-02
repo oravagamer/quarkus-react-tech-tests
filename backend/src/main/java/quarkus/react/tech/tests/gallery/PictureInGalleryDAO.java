@@ -6,25 +6,29 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import quarkus.react.tech.tests.gallery.galleries.GalleryEntity;
 import quarkus.react.tech.tests.gallery.pictures.PictureEntity;
+import quarkus.react.tech.tests.gallery.pictures.PictureEntityDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
 public class PictureInGalleryDAO implements PanacheRepository<PictureInGalleryEntity> {
-    public List<?> findPicturesByGID(Long gid) {
+    public List<PictureEntityDTO> findPicturesByGID(Long gid) {
         return getEntityManager()
-                .createNamedQuery("PicturesOrderDAO.readPictureOrder")
+                .createNamedQuery("PicturesOrderDAO.readPictureOrder", PictureEntityDTO.class)
                 .setParameter(1, gid)
                 .getResultList();
     }
 
     public void addPictureToGallery(Long pid, Long gid) {
-        new PictureInGalleryEntity()
+        PictureInGalleryEntity
+                .builder()
                 .setId(
-                        new PictureInGalleryID()
+                        PictureInGalleryID
+                                .builder()
                                 .setPid(pid)
                                 .setGid(gid)
+                                .build()
                 )
                 .setPicture(PictureEntity.findById(pid))
                 .setGallery(GalleryEntity.findById(gid))
@@ -35,10 +39,11 @@ public class PictureInGalleryDAO implements PanacheRepository<PictureInGalleryEn
                                 .getResultList()
                                 .get(0)) + 1
                 )
+                .build()
                 .persist();
     }
 
-    public List<?> reOrderPicturesInGallery(List<Long> pids, Long gid) {
+    public List<PictureEntityDTO> reOrderPicturesInGallery(List<Long> pids, Long gid) {
         List<Long> list = new ArrayList<>(pids);
         EntityManager entityManager = getEntityManager();
         list.addAll(

@@ -2,6 +2,10 @@ package quarkus.react.tech.tests.gallery.galleries;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
@@ -14,6 +18,12 @@ import java.util.Set;
 @Table(
         name = "galleries"
 )
+@Getter
+@Builder(
+        setterPrefix = "set"
+)
+@AllArgsConstructor
+@NoArgsConstructor
 public class GalleryEntity extends PanacheEntityBase {
     @Id
     @SequenceGenerator(
@@ -66,29 +76,4 @@ public class GalleryEntity extends PanacheEntityBase {
     @JoinColumn(name = "thumbnail")
     @OnDelete(action = OnDeleteAction.CASCADE)
     PictureEntity picture;
-
-    public GalleryEntity setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public GalleryEntity setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public GalleryEntity setCreated(Timestamp created) {
-        this.created = created;
-        return this;
-    }
-
-    public GalleryEntity setEdited(Timestamp edited) {
-        this.edited = edited;
-        return this;
-    }
-
-    public GalleryEntity setThumbnail(Long thumbnail) {
-        this.thumbnail = thumbnail;
-        return this;
-    }
 }

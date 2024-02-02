@@ -2,11 +2,21 @@ package quarkus.react.tech.tests.gallery;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Builder(
+        setterPrefix = "set"
+)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PictureInGalleryID implements Serializable {
     @Column(
             name = "picture_id",
@@ -19,24 +29,6 @@ public class PictureInGalleryID implements Serializable {
             nullable = false
     )
     private Long gid;
-
-    public Long getPid() {
-        return pid;
-    }
-
-    public PictureInGalleryID setPid(Long pid) {
-        this.pid = pid;
-        return this;
-    }
-
-    public Long getGid() {
-        return gid;
-    }
-
-    public PictureInGalleryID setGid(Long gid) {
-        this.gid = gid;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

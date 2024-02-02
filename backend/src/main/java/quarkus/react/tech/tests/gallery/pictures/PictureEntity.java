@@ -2,6 +2,10 @@ package quarkus.react.tech.tests.gallery.pictures;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
 import quarkus.react.tech.tests.gallery.galleries.GalleryEntity;
 
@@ -12,6 +16,12 @@ import java.util.Set;
 @Table(
         name = "pictures"
 )
+@Getter
+@Builder(
+        setterPrefix = "set"
+)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PictureEntity extends PanacheEntityBase {
     @Id
     @SequenceGenerator(
@@ -74,71 +84,4 @@ public class PictureEntity extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "picture")
     Set<GalleryEntity> gallerySet;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public String getDatatype() {
-        return datatype;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public byte[] getThumbnail() {
-        return thumbnail;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public Timestamp getUploaded() {
-        return uploaded;
-    }
-
-    public Timestamp getEdited() {
-        return edited;
-    }
-
-    public PictureEntity setFilename(String filename) {
-        this.filename = filename;
-        return this;
-    }
-
-    public PictureEntity setDatatype(String datatype) {
-        this.datatype = datatype;
-        return this;
-    }
-
-    public PictureEntity setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public PictureEntity setUploaded(Timestamp uploaded) {
-        this.uploaded = uploaded;
-        return this;
-    }
-
-    public PictureEntity setEdited(Timestamp edited) {
-        this.edited = edited;
-        return this;
-    }
-
-    public PictureEntity setData(byte[] data) {
-        this.data = data;
-        return this;
-    }
-
-    public PictureEntity setThumbnail(byte[] thumbnail) {
-        this.thumbnail = thumbnail;
-        return this;
-    }
 }

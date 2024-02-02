@@ -3,15 +3,16 @@ package quarkus.react.tech.tests.gallery.galleries;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import quarkus.react.tech.tests.gallery.PictureInGalleryDAO;
 import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
 import quarkus.react.tech.tests.gallery.PictureInGalleryID;
+import quarkus.react.tech.tests.gallery.pictures.PictureEntityDTO;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class GalleriesService {
@@ -21,18 +22,22 @@ public class GalleriesService {
     @Inject
     PictureInGalleryDAO pictureInGalleryDAO;
 
-    public Response getGalleriesInfo() {
-        return Response.ok(GalleryEntity.findAll(Sort.by("created")).project(GalleryEntityDTO.class).list()).build();
+    public List<GalleryEntityDTO> getGalleriesInfo() {
+        return GalleryEntity
+                .findAll(Sort.by("created"))
+                .project(GalleryEntityDTO.class)
+                .list();
     }
 
     public void createGallery(String name, String description) {
-        GalleryEntity entity = new GalleryEntity();
         try {
-            entity
+            GalleryEntity
+                    .builder()
                     .setCreated(Timestamp.valueOf(LocalDateTime.now()))
                     .setEdited(Timestamp.valueOf(LocalDateTime.now()))
                     .setName(name)
                     .setDescription(description)
+                    .build()
                     .persist();
         } catch (Exception ex) {
             logger.error(ex.getMessage());
@@ -40,38 +45,62 @@ public class GalleriesService {
     }
 
     public void changeGalName(Long id, String name) {
-        GalleryEntity.update("name = ?1, edited = current_timestamp WHERE id = ?2", name, id);
+        GalleryEntity.update(
+                "name = ?1, edited = ?2 WHERE id = ?3",
+                name,
+                Timestamp.valueOf(LocalDateTime.now()),
+                id
+        );
     }
 
     public void changeGalDescription(Long id, String description) {
-        GalleryEntity.update("description = ?1, edited = current_timestamp WHERE id = ?2", description, id);
+        GalleryEntity.update(
+                "description = ?1, edited = ?2 WHERE id = ?3",
+                description,
+                Timestamp.valueOf(LocalDateTime.now()),
+                id
+        );
     }
 
     public void deleteGallery(Long id) {
         GalleryEntity.deleteById(id);
     }
 
-    public Response getGalleryInfo(Long id) {
+    public List<Object> getGalleryInfo(Long id) {
         ArrayList<Object> list = new ArrayList<>();
         list.add(
                 GalleryEntity
                         .find("id", id)
                         .project(GalleryEntityDTO.class)
-                        .firstResult()
+                        .stream()
+                        .map(
+                                value -> new GalleryEntityDTO(
+                                        value.id(),
+                                        value.name(),
+                                        value.description(),
+                                        value.created(),
+                                        value.edited(),
+                                        value.thumbnail() == null ? 1L : value.thumbnail()
+                                )
+                        )
+                        .toList()
+                        .get(0)
         );
         list.add(pictureInGalleryDAO.findPicturesByGID(id));
-        return Response.ok().entity(list).build();
+        return list;
     }
 
-    public Response changePictureOrder(ArrayList<Long> ids, Long gid) {
-        return Response.ok().entity(pictureInGalleryDAO.reOrderPicturesInGallery(ids, gid)).build();
+    public List<PictureEntityDTO> changePictureOrder(ArrayList<Long> ids, Long gid) {
+        return pictureInGalleryDAO.reOrderPicturesInGallery(ids, gid);
     }
 
     public void removePictureFromGallery(Long pid, Long gid) {
         PictureInGalleryEntity.deleteById(
-                new PictureInGalleryID()
+                PictureInGalleryID
+                        .builder()
                         .setPid(pid)
                         .setGid(gid)
+                        .build()
         );
     }
 
