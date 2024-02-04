@@ -13,8 +13,13 @@ const GallerySection: FC<Props> = (props) => {
             <Typography component="h1" fontSize={50}>
                 Gallery {props.galleryName}
             </Typography>
-            <Button size="medium" color="primary" component={Link} to="..">
-                <ArrowBackIosIcon />
+            <Button
+                size="medium"
+                color="primary"
+                component={Link}
+                to=".."
+                startIcon={<ArrowBackIosIcon />}
+            >
                 Go Back
             </Button>
             <Grid

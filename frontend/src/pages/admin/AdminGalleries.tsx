@@ -12,11 +12,7 @@ const AdminGalleries = () => {
         <RequestLayout loading={loading} error={error} id="admin-galleries">
             <GalleriesSection>
                 {data?.map((gallery) => (
-                    <GalleriesCard
-                        gallery={gallery}
-                        key={gallery.id}
-                        prefix="edit"
-                    />
+                    <GalleriesCard gallery={gallery} key={gallery.id} />
                 ))}
             </GalleriesSection>
         </RequestLayout>

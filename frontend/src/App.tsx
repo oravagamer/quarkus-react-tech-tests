@@ -17,6 +17,7 @@ const App = () => {
     const AdminGalleries = loadComponentAsync(
         "./pages/admin/AdminGalleries.tsx",
     );
+    const AdminGallery = loadComponentAsync("./pages/admin/AdminGallery.tsx");
 
     const theme = useAppSelector(themeSelector);
 
@@ -77,10 +78,11 @@ const App = () => {
                                     path: ":gid",
                                     children: [
                                         {
-                                            path: "edit",
+                                            index: true,
+                                            element: <AdminGallery />,
                                         },
                                         {
-                                            index: true,
+                                            path: "edit",
                                         },
                                     ],
                                 },
