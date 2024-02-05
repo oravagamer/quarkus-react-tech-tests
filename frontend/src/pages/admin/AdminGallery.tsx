@@ -7,6 +7,8 @@ import AdminGallerySection from "../../components/admin/Gallery/AdminGallerySect
 import {
     closestCenter,
     DndContext,
+    DragEndEvent,
+    DragStartEvent,
     KeyboardSensor,
     PointerSensor,
     useSensor,
@@ -35,11 +37,11 @@ const AdminGallery = () => {
                 myData?.[1].map((value) => value.id),
             )
             .then((response) => response.data)
-            .then((data) => setMyData([myData?.[0], data]));
+            .then((data) => setMyData([myData?.[0] as Gallery, data]));
         console.log(myData);
     };
 
-    const [activeId, setActiveId] = useState(null);
+    const [activeId, setActiveId] = useState<number | null>(null);
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -47,24 +49,32 @@ const AdminGallery = () => {
         }),
     );
 
-    const handleDragStart = (event) => {
-        setActiveId(event.active.id);
+    const handleDragStart = (event: DragStartEvent) => {
+        setActiveId(event.active.id as any as number);
     };
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event: DragEndEvent) => {
         setActiveId(null);
         const { active, over } = event;
 
         setMyData((items) => {
-            const oldIndex = items?.[1].findIndex(
-                (value) => value.id == active.id,
-            );
-            const newIndex = items?.[1].findIndex(
-                (value) => value.id == over.id,
-            );
-
-            // @ts-ignore
-            return [items?.[0], arrayMove(items?.[1], oldIndex, newIndex)];
+            if (active.id !== over?.id) {
+                const oldIndex = items?.[1].findIndex(
+                    (value) => value.id == active.id,
+                );
+                const newIndex = items?.[1].findIndex(
+                    (value) => value.id == over?.id,
+                );
+                return [
+                    items?.[0] as Gallery,
+                    arrayMove(
+                        items?.[1] as Picture[],
+                        oldIndex as number,
+                        newIndex as number,
+                    ),
+                ];
+            }
+            return myData as [Gallery, Picture[]];
         });
     };
 
