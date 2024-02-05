@@ -22,11 +22,10 @@ public class PicturesService {
     PictureInGalleryDAO pictureInGalleryDAO;
 
     public FileDTO downloadPicture(Long id) {
-
         return PictureEntity
                 .find("id", id)
                 .project(FileDTO.class)
-                .firstResult();
+                .singleResult();
     }
 
     public void uploadPicture(List<FileUpload> files, List<String> descriptions) throws IOException {

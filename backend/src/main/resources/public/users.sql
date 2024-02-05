@@ -1,3 +1,5 @@
+CREATE DATABASE quarkus;
+CREATE SCHEMA quarkus_tests;
 CREATE USER quarkus_tests WITH PASSWORD 'quarkus_tests';
 GRANT CONNECT ON DATABASE quarkus TO quarkus_tests;
 GRANT USAGE ON SCHEMA quarkus_tests TO quarkus_tests;

@@ -20,12 +20,24 @@ import {
     SortableContext,
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
+import axios from "axios";
 
 const AdminGallery = () => {
     let { gid } = useParams();
     const { myData, loading, error, setMyData } = useFetchMyData<
         [Gallery, Picture[]]
     >(`${backendUrl}/galleries/${gid}`);
+
+    const saveChanges = async () => {
+        await axios
+            .put<Picture[]>(
+                `${backendUrl}/galleries/${gid}/ord`,
+                myData?.[1].map((value) => value.id),
+            )
+            .then((response) => response.data)
+            .then((data) => setMyData([myData?.[0], data]));
+        console.log(myData);
+    };
 
     const [activeId, setActiveId] = useState(null);
     const sensors = useSensors(
@@ -37,7 +49,6 @@ const AdminGallery = () => {
 
     const handleDragStart = (event) => {
         setActiveId(event.active.id);
-        console.log(event.active.id);
     };
 
     const handleDragEnd = (event) => {
@@ -45,18 +56,24 @@ const AdminGallery = () => {
         const { active, over } = event;
 
         setMyData((items) => {
-            const oldIndex = items?.[1].indexOf(21);
-            const newIndex = items?.[1].indexOf(1);
+            const oldIndex = items?.[1].findIndex(
+                (value) => value.id == active.id,
+            );
+            const newIndex = items?.[1].findIndex(
+                (value) => value.id == over.id,
+            );
 
             // @ts-ignore
             return [items?.[0], arrayMove(items?.[1], oldIndex, newIndex)];
         });
-        console.log(myData);
     };
 
     return (
         <RequestLayout loading={loading} error={error} id="admin-gallery">
-            <AdminGallerySection galleryName={myData?.[0].name}>
+            <AdminGallerySection
+                galleryName={myData?.[0].name}
+                onSaveChanges={saveChanges}
+            >
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
