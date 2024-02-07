@@ -4,18 +4,18 @@ import RequestLayout from "../../components/RequestLayout.tsx";
 import GallerySection from "../../components/common/Gallery/GallerySection.tsx";
 import GalleryCard from "../../components/common/Gallery/GalleryCard.tsx";
 import GalleryBackdrop from "../../components/common/Gallery/GalleryBackdrop.tsx";
-import useFetchMyData from "../../context/fetchMyData.ts";
+import useAxios from "axios-hooks";
 
 const Gallery = () => {
     let { gid, pid } = useParams();
-    const { myData, loading, error } = useFetchMyData<[Gallery, Picture[]]>(
+    const [{ data, loading, error }] = useAxios<[Gallery, Picture[]]>(
         `${backendUrl}/galleries/${gid}`,
     );
 
     const toLeft = (pid: number | undefined): number | undefined => {
         try {
-            return myData?.["1"][
-                myData?.["1"].findIndex((value) => value.id === Number(pid)) - 1
+            return data?.["1"][
+                data?.["1"].findIndex((value) => value.id === Number(pid)) - 1
             ].id;
         } catch (e) {
             return undefined;
@@ -24,8 +24,8 @@ const Gallery = () => {
 
     const toRight = (pid: number | undefined): number | undefined => {
         try {
-            return myData?.["1"][
-                myData?.["1"].findIndex((value) => value.id === Number(pid)) + 1
+            return data?.["1"][
+                data?.["1"].findIndex((value) => value.id === Number(pid)) + 1
             ].id;
         } catch (e) {
             return undefined;
@@ -34,13 +34,13 @@ const Gallery = () => {
 
     return (
         <RequestLayout loading={loading} error={error} id="gallery">
-            <GallerySection galleryName={myData?.[0].name}>
-                {myData?.[1].map((picture) => (
+            <GallerySection galleryName={data?.[0].name}>
+                {data?.[1].map((picture) => (
                     <GalleryCard picture={picture} key={picture.id} />
                 ))}
             </GallerySection>
             <GalleryBackdrop
-                picture={myData?.["1"].find(
+                picture={data?.["1"].find(
                     (value) => value.id === Number(pid),
                 )}
                 onToLeft={toLeft}

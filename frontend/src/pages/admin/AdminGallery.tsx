@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
-import { backendUrl } from "../../data/settings.ts";
+import {useParams} from "react-router-dom";
+import {backendUrl} from "../../data/settings.ts";
 import RequestLayout from "../../components/RequestLayout.tsx";
-import useFetchMyData from "../../context/fetchMyData.ts";
 import AdminGalleryCard from "../../components/admin/Gallery/AdminGalleryCard.tsx";
 import AdminGallerySection from "../../components/admin/Gallery/AdminGallerySection.tsx";
 import {
@@ -14,8 +13,8 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { Grid } from "@mui/material";
-import { useState } from "react";
+import {Grid} from "@mui/material";
+import {useState} from "react";
 import {
     arrayMove,
     rectSortingStrategy,
@@ -23,24 +22,14 @@ import {
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import axios from "axios";
+import useAxios from "axios-hooks";
 
 const AdminGallery = () => {
-    let { gid } = useParams();
-    const { myData, loading, error, setMyData } = useFetchMyData<
-        [Gallery, Picture[]]
-    >(`${backendUrl}/galleries/${gid}`);
+    let {gid} = useParams();
+    const[ {data, loading, error}] = useAxios<[Gallery, Picture[]]>(`${backendUrl}/galleries/${gid}`);
 
-    const saveChanges = async () => {
-        await axios
-            .put<Picture[]>(
-                `${backendUrl}/galleries/${gid}/ord`,
-                myData?.[1].map((value) => value.id),
-            )
-            .then((response) => response.data)
-            .then((data) => setMyData([myData?.[0] as Gallery, data]));
-        console.log(myData);
-    };
-
+    const [dataOld, setDataOld] = useState(data);
+    const [dataNew, setDataNew] = useState(dataOld);
     const [activeId, setActiveId] = useState<number | null>(null);
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -49,21 +38,32 @@ const AdminGallery = () => {
         }),
     );
 
+    const saveChanges = async () => {
+        await axios
+            .put<Picture[]>(
+                `${backendUrl}/galleries/${gid}/ord`,
+                dataNew?.[1].map(value => value.id),
+            )
+            .then((response) => response.data)
+            .then((data) => setDataOld([dataOld?.[0] as Gallery, data]));
+        setDataNew(dataOld);
+    };
+
     const handleDragStart = (event: DragStartEvent) => {
         setActiveId(event.active.id as any as number);
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
         setActiveId(null);
-        const { active, over } = event;
+        const {active, over} = event;
 
-        setMyData((items) => {
+        setDataNew(items => {
             if (active.id !== over?.id) {
                 const oldIndex = items?.[1].findIndex(
-                    (value) => value.id == active.id,
+                    value => value.id == active.id
                 );
                 const newIndex = items?.[1].findIndex(
-                    (value) => value.id == over?.id,
+                    value => value.id == over?.id
                 );
                 return [
                     items?.[0] as Gallery,
@@ -74,14 +74,14 @@ const AdminGallery = () => {
                     ),
                 ];
             }
-            return myData as [Gallery, Picture[]];
+            return dataNew as [Gallery, Picture[]];
         });
     };
 
     return (
         <RequestLayout loading={loading} error={error} id="admin-gallery">
             <AdminGallerySection
-                galleryName={myData?.[0].name}
+                galleryName={dataOld?.[0].name}
                 onSaveChanges={saveChanges}
             >
                 <DndContext
@@ -95,14 +95,14 @@ const AdminGallery = () => {
                         spacing={2}
                         justifyContent="space-around"
                         alignItems="stretch"
-                        columns={{ xl: 4, lg: 3, md: 2, sm: 1, xs: 1 }}
-                        sx={{ paddingTop: 2, paddingBottom: 2 }}
+                        columns={{xl: 4, lg: 3, md: 2, sm: 1, xs: 1}}
+                        sx={{paddingTop: 2, paddingBottom: 2}}
                     >
                         <SortableContext
-                            items={myData ? myData[1] : [1]}
+                            items={data ? data[1] : [1]}
                             strategy={rectSortingStrategy}
                         >
-                            {myData?.[1].map((picture) => (
+                            {data?.[1].map(picture => (
                                 <AdminGalleryCard
                                     picture={picture}
                                     key={picture.id}
