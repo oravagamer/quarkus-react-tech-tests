@@ -22,3 +22,11 @@ spring-boot-and-react-tech-tests
 - Book reader
 - Calendar
 - Admin
+
+### To do:
+
+- Remake axios calls
+- Reorder
+- Download cache of picture
+- Admin
+- Edit gallery
