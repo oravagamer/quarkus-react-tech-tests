@@ -22,11 +22,18 @@ import {
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import axios from "axios";
-import useAxios from "axios-hooks";
 
 const AdminGallery = () => {
     let {gid} = useParams();
-    const[ {data, loading, error}] = useAxios<[Gallery, Picture[]]>(`${backendUrl}/galleries/${gid}`);
+    const [data, setData] = useState<[Gallery, Picture[]] | undefined>();
+    const [error, setError] = useState<any>();
+    const [loading, setLoading] = useState(true);
+
+    axios
+        .get<[Gallery, Picture[]]>(`${backendUrl}/galleries/${gid}`,
+            {onDownloadProgress: progressEvent => progressEvent.})
+        .then(response => setData(response.data))
+        .catch(ex => setError(ex));
 
     const [dataOld, setDataOld] = useState(data);
     const [dataNew, setDataNew] = useState(dataOld);
