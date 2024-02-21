@@ -29,6 +29,7 @@ const AdminGallery = () => {
     const [loading, setLoading] = useState(true);
     const [dataOld, setDataOld] = useState<[Gallery, Picture[]] | undefined>();
     const [dataNew, setDataNew] = useState<[Gallery, Picture[]] | undefined>();
+    const [changed, setChanged] = useState(false);
     const [activeId, setActiveId] = useState<number | null>(null);
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -75,17 +76,18 @@ const AdminGallery = () => {
                 const newIndex = items?.[1].findIndex(
                     (value) => value.id == over?.id,
                 );
-                setDataNew(() => [
+                return [
                     items?.[0] as Gallery,
                     arrayMove(
                         items?.[1] as Picture[],
                         oldIndex as number,
                         newIndex as number,
                     ),
-                ]);
+                ];
             }
             return dataNew as [Gallery, Picture[]];
         });
+        setChanged(!(dataNew?.[1] === dataOld?.[1]));
     };
 
     return (
@@ -93,6 +95,7 @@ const AdminGallery = () => {
             <AdminGallerySection
                 galleryName={dataOld?.[0].name}
                 onSaveChanges={saveChanges}
+                changed={changed}
             >
                 <DndContext
                     sensors={sensors}
@@ -109,7 +112,7 @@ const AdminGallery = () => {
                         sx={{ paddingTop: 2, paddingBottom: 2 }}
                     >
                         <SortableContext
-                            items={dataOld ? dataOld[1] : [1]}
+                            items={dataNew ? dataNew[1] : [1]}
                             strategy={rectSortingStrategy}
                         >
                             {dataNew?.[1].map((picture) => (

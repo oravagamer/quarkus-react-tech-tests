@@ -8,6 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 interface Props extends DefaultProps {
     galleryName?: string;
     onSaveChanges: () => void;
+    changed: boolean;
 }
 
 const AdminGallerySection: FC<Props> = (props) => {
@@ -36,7 +37,7 @@ const AdminGallerySection: FC<Props> = (props) => {
                         color="success"
                         startIcon={<SaveIcon />}
                         onClick={props.onSaveChanges}
-                        disabled={true}
+                        disabled={!props.changed}
                     >
                         Save changes
                     </Button>
