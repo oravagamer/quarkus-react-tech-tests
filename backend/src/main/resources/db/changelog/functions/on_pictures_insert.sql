@@ -3,7 +3,7 @@ CREATE FUNCTION on_pictures_insert() RETURNS TRIGGER
 '
     DECLARE
         default_gallery BIGINT;
-        pic_count       INT;
+        pic_count       BIGINT;
     BEGIN
         SELECT id
         FROM galleries
