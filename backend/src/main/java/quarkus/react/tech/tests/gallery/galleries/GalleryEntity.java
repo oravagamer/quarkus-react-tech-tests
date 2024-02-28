@@ -52,13 +52,15 @@ public class GalleryEntity extends PanacheEntityBase {
 
     @Column(
             name = "created",
-            nullable = false
+            nullable = false,
+            insertable = false
     )
     private Timestamp created;
 
     @Column(
             name = "edited",
-            nullable = false
+            nullable = false,
+            insertable = false
     )
     private Timestamp edited;
 

@@ -69,13 +69,15 @@ public class PictureEntity extends PanacheEntityBase {
 
     @Column(
             name = "uploaded",
-            nullable = false
+            nullable = false,
+            insertable = false
     )
     private Timestamp uploaded;
 
     @Column(
             name = "edited",
-            nullable = false
+            nullable = false,
+            insertable = false
     )
     private Timestamp edited;
 
