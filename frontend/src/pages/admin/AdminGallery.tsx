@@ -44,20 +44,34 @@ const AdminGallery = () => {
             .then((response) => {
                 setDataOld(response.data);
                 setDataNew(dataOld);
+                setLoading(false);
             })
-            .then(() => setLoading(false))
             .catch((ex) => setError(ex));
     }, [loading]);
 
+    useEffect(() => {
+        setChanged(
+            !(
+                JSON.stringify(
+                    dataNew?.[1] === undefined ? dataOld?.[1] : dataNew?.[1],
+                ) === JSON.stringify(dataOld?.[1])
+            ),
+        );
+    }, [dataNew, dataOld]);
+
     const saveChanges = async () => {
-        await axios
+        axios
             .put<Picture[]>(
                 `${backendUrl}/galleries/${gid}/ord`,
                 dataNew?.[1].map((value) => value.id),
             )
             .then((response) => response.data)
-            .then((data) => setDataOld([dataOld?.[0] as Gallery, data]));
-        setDataNew(dataOld);
+            .then((data) => {
+                setDataOld([dataOld?.[0] as Gallery, data]);
+                setDataNew([dataOld?.[0] as Gallery, data]);
+                setChanged(false);
+            })
+            .catch((error) => setError(error));
     };
 
     const handleDragStart = (event: DragStartEvent) => {
@@ -87,7 +101,6 @@ const AdminGallery = () => {
             }
             return dataNew as [Gallery, Picture[]];
         });
-        setChanged(!(dataNew?.[1] === dataOld?.[1]));
     };
 
     return (
