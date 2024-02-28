@@ -4,7 +4,7 @@ CREATE TRIGGER on_pic_update
     FOR EACH ROW
 EXECUTE PROCEDURE on_pictures_update();
 
-CREATE TRIGGER on_gal_insert
+CREATE TRIGGER on_pic_insert
     AFTER INSERT
     ON pictures
     FOR EACH ROW
