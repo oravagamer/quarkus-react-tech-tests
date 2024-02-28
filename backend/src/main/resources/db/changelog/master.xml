@@ -5,4 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <include file="./tables/tables-changelog.xml" relativeToChangelogFile="true"/>
     <include file="./inserts/inserts-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="./functions/functions-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="./triggers/triggers-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="./privileges/privileges-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

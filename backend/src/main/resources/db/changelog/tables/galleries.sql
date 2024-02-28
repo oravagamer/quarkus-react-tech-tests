@@ -2,11 +2,11 @@ CREATE SEQUENCE IF NOT EXISTS galleries_id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE galleries
 (
-    id          BIGINT                      NOT NULL,
+    id          BIGINT                      NOT NULL DEFAULT nextval('galleries_id_seq'),
     name        VARCHAR(50)                 NOT NULL,
     description VARCHAR(255),
-    created     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    edited      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    created     TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    edited      TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     thumbnail   BIGINT,
     CONSTRAINT pk_galleries PRIMARY KEY (id)
 );

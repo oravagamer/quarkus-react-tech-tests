@@ -9,8 +9,6 @@ import quarkus.react.tech.tests.gallery.PictureInGalleryEntity;
 import quarkus.react.tech.tests.gallery.PictureInGalleryID;
 import quarkus.react.tech.tests.gallery.pictures.PictureEntityDTO;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +31,6 @@ public class GalleriesService {
         try {
             GalleryEntity
                     .builder()
-                    .setCreated(Timestamp.valueOf(LocalDateTime.now()))
-                    .setEdited(Timestamp.valueOf(LocalDateTime.now()))
                     .setName(name)
                     .setDescription(description)
                     .build()
@@ -46,18 +42,16 @@ public class GalleriesService {
 
     public void changeGalName(Long id, String name) {
         GalleryEntity.update(
-                "name = ?1, edited = ?2 WHERE id = ?3",
+                "name = ?1 WHERE id = ?2",
                 name,
-                Timestamp.valueOf(LocalDateTime.now()),
                 id
         );
     }
 
     public void changeGalDescription(Long id, String description) {
         GalleryEntity.update(
-                "description = ?1, edited = ?2 WHERE id = ?3",
+                "description = ?1 WHERE id = ?2",
                 description,
-                Timestamp.valueOf(LocalDateTime.now()),
                 id
         );
     }
