@@ -1,6 +1,4 @@
-DO
-'
-BEGIN
+
 
 IF NOT EXISTS(SELECT * FROM pg_catalog.pg_roles WHERE rolname = ''quarkus_tests'')
     THEN
@@ -11,5 +9,3 @@ IF NOT EXISTS(SELECT * FROM pg_catalog.pg_roles WHERE rolname = ''quarkus_tests'
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA quarkus_tests TO quarkus_tests;
     GRANT USAGE ON ALL SEQUENCES IN SCHEMA quarkus_tests TO quarkus_tests;
     GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA quarkus_tests TO quarkus_tests;
-END;
-' LANGUAGE PLPGSQL;
