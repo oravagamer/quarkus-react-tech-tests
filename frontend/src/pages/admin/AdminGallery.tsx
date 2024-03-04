@@ -57,7 +57,7 @@ const AdminGallery = () => {
                 ) === JSON.stringify(dataOld?.[1])
             ),
         );
-    }, [dataNew, dataOld]);
+    }, [dataNew]);
 
     const saveChanges = async () => {
         axios

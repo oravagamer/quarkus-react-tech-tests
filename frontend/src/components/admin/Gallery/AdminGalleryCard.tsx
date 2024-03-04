@@ -37,13 +37,23 @@ const AdminGalleryCard: FC<Props> = (props) => {
                 opacity: isDragging ? "0.3!important" : "1!important",
             }}
         >
-            <Card sx={{ minWidth: 300, height: "100%", display: "flex" }}>
+            <Card
+                sx={{
+                    minWidth: 300,
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
                 <CardMedia
                     component="img"
                     src={`${backendUrl}/picture/${props.picture.id}`}
                     alt={`Picture ${props.picture.id}`}
                     onLoad={() => setPictureLoading(false)}
-                    sx={{ display: !pictureLoading ? "block" : "none", alignSelf: "center"}}
+                    sx={{
+                        display: !pictureLoading ? "block" : "none",
+                        alignSelf: "center",
+                    }}
                 />
                 <CardMedia
                     component={Skeleton}

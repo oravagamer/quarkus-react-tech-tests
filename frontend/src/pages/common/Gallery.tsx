@@ -4,14 +4,24 @@ import RequestLayout from "../../components/RequestLayout.tsx";
 import GallerySection from "../../components/common/Gallery/GallerySection.tsx";
 import GalleryCard from "../../components/common/Gallery/GalleryCard.tsx";
 import GalleryBackdrop from "../../components/common/Gallery/GalleryBackdrop.tsx";
-import useAxios from "axios-hooks";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Gallery = () => {
     let { gid, pid } = useParams();
-    const [{ data, loading, error }] = useAxios<[Gallery, Picture[]]>(
-        `${backendUrl}/galleries/${gid}`,
-    );
+    const [error, setError] = useState<any>();
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<[Gallery, Picture[]] | undefined>();
 
+    useEffect(() => {
+        axios
+            .get<[Gallery, Picture[]]>(`${backendUrl}/galleries/${gid}`)
+            .then((response) => {
+                setData(response.data);
+                setLoading(false);
+            })
+            .catch((ex) => setError(ex));
+    }, [loading]);
     const toLeft = (pid: number | undefined): number | undefined => {
         try {
             return data?.["1"][
@@ -40,9 +50,7 @@ const Gallery = () => {
                 ))}
             </GallerySection>
             <GalleryBackdrop
-                picture={data?.["1"].find(
-                    (value) => value.id === Number(pid),
-                )}
+                picture={data?.["1"].find((value) => value.id === Number(pid))}
                 onToLeft={toLeft}
                 onToRight={toRight}
             />

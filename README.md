@@ -26,8 +26,8 @@ spring-boot-and-react-tech-tests
 ### To do:
 
 - [x] Default value Db - time
-- [ ] Remake axios calls
-- [ ] Reorder
+- [x] Remake axios calls
+- [x] Reorder
 - [ ] Download cache of picture
 
 
