@@ -21,39 +21,23 @@ public class GalleriesService {
     PictureInGalleryDAO pictureInGalleryDAO;
 
     public List<GalleryEntityDTO> getGalleriesInfo() {
-        return GalleryEntity
-                .findAll(Sort.by("created"))
-                .project(GalleryEntityDTO.class)
-                .list();
+        return GalleryEntity.findAll(Sort.by("created")).project(GalleryEntityDTO.class).list();
     }
 
     public void createGallery(String name, String description) {
         try {
-            GalleryEntity
-                    .builder()
-                    .setName(name)
-                    .setDescription(description)
-                    .build()
-                    .persist();
+            GalleryEntity.builder().setName(name).setDescription(description).build().persist();
         } catch (Exception ex) {
             logger.error(ex.getMessage());
         }
     }
 
     public void changeGalName(Long id, String name) {
-        GalleryEntity.update(
-                "name = ?1 WHERE id = ?2",
-                name,
-                id
-        );
+        GalleryEntity.update("name = ?1 WHERE id = ?2", name, id);
     }
 
     public void changeGalDescription(Long id, String description) {
-        GalleryEntity.update(
-                "description = ?1 WHERE id = ?2",
-                description,
-                id
-        );
+        GalleryEntity.update("description = ?1 WHERE id = ?2", description, id);
     }
 
     public void deleteGallery(Long id) {
@@ -62,24 +46,7 @@ public class GalleriesService {
 
     public List<Object> getGalleryInfo(Long id) {
         ArrayList<Object> list = new ArrayList<>();
-        list.add(
-                GalleryEntity
-                        .find("id", id)
-                        .project(GalleryEntityDTO.class)
-                        .stream()
-                        .map(
-                                value -> new GalleryEntityDTO(
-                                        value.id(),
-                                        value.name(),
-                                        value.description(),
-                                        value.created(),
-                                        value.edited(),
-                                        value.thumbnail() == null ? 1L : value.thumbnail()
-                                )
-                        )
-                        .toList()
-                        .get(0)
-        );
+        list.add(GalleryEntity.find("id", id).project(GalleryEntityDTO.class).stream().map(value -> new GalleryEntityDTO(value.id(), value.name(), value.description(), value.created(), value.edited(), value.thumbnail() == null ? GalleryEntity.find("limit 1", Sort.by("created", Sort.Direction.Ascending)).project(GalleryEntityDTO.class).singleResult().id() : value.thumbnail())).findFirst());
         list.add(pictureInGalleryDAO.findPicturesByGID(id));
         return list;
     }
@@ -89,13 +56,7 @@ public class GalleriesService {
     }
 
     public void removePictureFromGallery(Long pid, Long gid) {
-        PictureInGalleryEntity.deleteById(
-                PictureInGalleryID
-                        .builder()
-                        .setPid(pid)
-                        .setGid(gid)
-                        .build()
-        );
+        PictureInGalleryEntity.deleteById(PictureInGalleryID.builder().setPid(pid).setGid(gid).build());
     }
 
     public void addPictureToGallery(Long pid, Long gid) {
@@ -104,7 +65,6 @@ public class GalleriesService {
     }
 
     public void setPictureAsThumbnail(Long pid, Long gid) {
-        GalleryEntity
-                .update("thumbnail = ?1 WHERE id = ?2", pid, gid);
+        GalleryEntity.update("thumbnail = ?1 WHERE id = ?2", pid, gid);
     }
 }

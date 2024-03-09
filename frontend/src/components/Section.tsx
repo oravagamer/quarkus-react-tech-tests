@@ -5,7 +5,12 @@ interface Props extends DefaultProps {}
 
 const Section: FC<Props> = (props) => {
     return (
-        <Box component="section" id={props.id} className={props.className}>
+        <Box
+            component="section"
+            id={props.id}
+            className={props.className}
+            sx={{ flex: "auto" }}
+        >
             {props.children}
         </Box>
     );

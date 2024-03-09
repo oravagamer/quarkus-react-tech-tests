@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { AxiosError } from "axios";
-import { Box, CircularProgress, Container } from "@mui/material";
+import { CircularProgress, Container } from "@mui/material";
 import Section from "./Section.tsx";
 
 interface Props extends DefaultProps {
@@ -31,14 +31,9 @@ const RequestLayout: FC<Props> = (props) => {
     }
 
     return (
-        <Box
-            component="section"
-            id={props.id}
-            className={props.className}
-            sx={{ maxWidth: "unset" }}
-        >
+        <Section>
             <Container maxWidth={false}>{props.children}</Container>
-        </Box>
+        </Section>
     );
 };
 

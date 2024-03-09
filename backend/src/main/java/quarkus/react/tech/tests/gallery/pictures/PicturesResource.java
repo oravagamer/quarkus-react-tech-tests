@@ -1,6 +1,5 @@
 package quarkus.react.tech.tests.gallery.pictures;
 
-import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -39,7 +38,6 @@ public class PicturesResource {
         }
         response.header("Content-Disposition", "filename=" + file.filename() + "." + file.datatype());
         response.header("Content-Type", "image/*");
-        Log.info(file.toString());
         return Uni
                 .createFrom()
                 .item(response.build());
