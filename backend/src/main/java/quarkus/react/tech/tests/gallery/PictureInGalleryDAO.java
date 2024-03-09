@@ -1,7 +1,6 @@
 package quarkus.react.tech.tests.gallery;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import quarkus.react.tech.tests.gallery.galleries.GalleryEntity;
@@ -53,8 +52,6 @@ public class PictureInGalleryDAO implements PanacheRepository<PictureInGalleryEn
                         .setParameter(2, pids)
                         .getResultList()
         );
-
-        Log.info(list.toString());
 
         for (int i = 0; i < list.size(); i++) {
             entityManager
